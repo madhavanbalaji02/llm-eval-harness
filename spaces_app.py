@@ -81,7 +81,7 @@ def extract_summary(payload: dict) -> dict[str, Any]:
         "faithfulness": hall.get("mean_faithfulness"),
         "nli_score": hall.get("mean_nli_score"),
         "answer_relevancy": ragas.get("mean_answer_relevancy"),
-        "context_precision": ragas.get("mean_context_precision"),
+        "context_precision": ragas.get("mean_context_precision") or s.get("ragas", {}).get("mean_context_precision"),
         "context_recall": ragas.get("mean_context_recall"),
         "total_cost_usd": cost.get("total_usd", 0),
         "cost_per_query_usd": cost.get("mean_per_query_usd", 0),
@@ -269,33 +269,75 @@ with tab_charts:
                                yaxis_title="tokens/sec", plot_bgcolor="white")
         st.plotly_chart(fig_tps, use_container_width=True)
 
-    # Radar — only if there are quality metrics
+    # Radar — quality metrics comparison
     has_quality = any(
-        s.get("semantic_sim") or s.get("answer_relevancy") or s.get("faithfulness")
+        s.get("semantic_sim") or s.get("faithfulness")
         for s in summaries
     )
     if has_quality:
+        # Distinct, high-contrast colors per model slot
+        COLORS = ["#2563eb", "#16a34a", "#dc2626", "#9333ea", "#ea580c", "#0891b2"]
+        # Drop Exact Match (always 0 for LLMs — collapses shapes and adds no signal)
+        labels = ["Semantic Sim.", "Non-Halluc.", "Faithfulness", "Ctx Precision", "Judge /5"]
+
         fig_radar = go.Figure()
-        for s in summaries:
+        for i, s in enumerate(summaries):
+            short = s["model"].split("/")[-1].replace("-versatile", "").replace("-instant", "")
+            color = COLORS[i % len(COLORS)]
             vals = [
-                s["exact_match"],
                 s["semantic_sim"] or 0,
                 1.0 - (s["hallucination_rate"] or 0),
                 s["faithfulness"] or 0,
-                s["answer_relevancy"] or 0,
+                s.get("context_precision") or 0,
+                (s["judge_score"] or 0) / 5.0,
             ]
-            labels = ["Exact Match", "Semantic Sim.", "Non-Hall.", "Faithfulness", "Relevancy"]
+            closed_vals = vals + [vals[0]]
+            closed_labels = labels + [labels[0]]
             fig_radar.add_trace(go.Scatterpolar(
-                r=vals + [vals[0]], theta=labels + [labels[0]],
-                fill="toself", name=s["model"].split("/")[-1], opacity=0.6,
+                r=closed_vals,
+                theta=closed_labels,
+                fill="toself",
+                name=short,
+                opacity=0.25,
+                fillcolor=color,
+                line={"color": color, "width": 3},
             ))
+
         fig_radar.update_layout(
-            polar={"radialaxis": {"range": [0, 1]}},
-            title="Quality Radar (higher = better)",
+            polar={
+                "bgcolor": "white",
+                "radialaxis": {
+                    "range": [0, 1],
+                    "tickfont": {"size": 12, "color": "#374151"},
+                    "gridcolor": "#d1d5db",
+                    "linecolor": "#9ca3af",
+                    "tickvals": [0.25, 0.5, 0.75, 1.0],
+                    "ticktext": ["0.25", "0.50", "0.75", "1.00"],
+                },
+                "angularaxis": {
+                    "tickfont": {"size": 14, "color": "#111827"},
+                    "gridcolor": "#e5e7eb",
+                    "linecolor": "#9ca3af",
+                },
+            },
+            paper_bgcolor="white",
+            plot_bgcolor="white",
+            title={
+                "text": "Quality Radar — all metrics on [0, 1] scale (higher = better)",
+                "font": {"size": 16, "color": "#111827"},
+            },
+            legend={
+                "font": {"size": 13, "color": "#111827"},
+                "bgcolor": "white",
+                "bordercolor": "#d1d5db",
+                "borderwidth": 1,
+            },
+            height=520,
+            margin={"t": 60, "b": 20},
         )
         st.plotly_chart(fig_radar, use_container_width=True)
     else:
-        st.info("💡 Quality metrics (semantic similarity, RAGAS, hallucination) not available in these results. Re-run without `--no-semantic --no-ragas --no-nli` flags to see them here.")
+        st.info("💡 Quality metrics not available. Run without `--no-semantic --no-ragas --no-nli` flags.")
 
 with tab_table:
     csv_buf = StringIO()
