@@ -29,8 +29,9 @@ st.set_page_config(
 # ── Pre-loaded result files (committed to the repo) ───────────────────────────
 
 PRELOADED_FILES = [
-    Path("results/groq_70b.json"),   # llama-3.3-70b-versatile
-    Path("results/groq_8b.json"),    # llama-3.1-8b-instant
+    Path("results/groq_70b.json"),    # llama-3.3-70b-versatile
+    Path("results/groq_8b.json"),     # llama-3.1-8b-instant
+    Path("results/claude_haiku.json"), # claude-haiku-4-5-20251001
 ]
 
 # ── Helpers (identical to dashboard/app.py) ───────────────────────────────────
