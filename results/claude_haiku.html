@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM Eval: claude-haiku-4-5-20251001</title>
+<script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 20px; background: #f8fafc; color: #1e293b; }
+  h1 { color: #0f172a; border-bottom: 3px solid #3b82f6; padding-bottom: 12px; }
+  h2 { color: #1e40af; margin-top: 32px; }
+  .meta { color: #64748b; font-size: 0.9em; margin-bottom: 24px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin: 24px 0; }
+  .kpi { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,.1); text-align: center; }
+  .kpi .value { font-size: 2em; font-weight: 700; color: #1d4ed8; }
+  .kpi .label { font-size: 0.8em; color: #64748b; margin-top: 4px; }
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 24px 0; }
+  .chart { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.1); font-size: 0.85em; }
+  th { background: #1e40af; color: white; padding: 10px 8px; text-align: left; }
+  td { padding: 8px; border-bottom: 1px solid #e2e8f0; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .center { text-align: center; }
+  tr.hallucination { background: #fef2f2; }
+  .error { color: #ef4444; font-size: 0.8em; }
+  tr:hover { background: #f1f5f9; }
+  @media (max-width: 768px) { .chart-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<h1>📊 LLM Eval: claude-haiku-4-5-20251001</h1>
+<div class="meta">Model: <strong>claude-haiku-4-5-20251001</strong> | Generated: 2026-05-21 00:27 UTC | Samples: 10/10</div>
+
+<h2>Key Metrics</h2>
+<div class="kpi-grid">
+  <div class="kpi"><div class="value">4936ms</div><div class="label">P50 Latency</div></div>
+  <div class="kpi"><div class="value">5338ms</div><div class="label">P95 Latency</div></div>
+  <div class="kpi"><div class="value">0.0%</div><div class="label">Exact Match</div></div>
+  <div class="kpi"><div class="value">0.000</div><div class="label">Semantic Sim.</div></div>
+  <div class="kpi"><div class="value">0.0%</div><div class="label">Hallucination Rate</div></div>
+  <div class="kpi"><div class="value">$18.456m</div><div class="label">Total Cost</div></div>
+</div>
+
+<h2>Charts</h2>
+<div class="chart-grid">
+  <div class="chart" id="chart-latency"></div><script>Plotly.react("chart-latency", [{"marker": {"color": ["#3b82f6", "#f59e0b", "#ef4444", "#10b981"]}, "text": ["4936ms", "5338ms", "5379ms", "4535ms"], "textposition": "outside", "x": ["P50", "P95", "P99", "Mean"], "y": [4935.593666974455, 5338.363850000314, 5379.092270038091, 4534.78950408753], "type": "bar"}], {"template": {"data": {"histogram2dcontour": [{"type": "histogram2dcontour", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "choropleth": [{"type": "choropleth", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "histogram2d": [{"type": "histogram2d", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "heatmap": [{"type": "heatmap", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "heatmapgl": [{"type": "heatmapgl", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "contourcarpet": [{"type": "contourcarpet", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "contour": [{"type": "contour", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "surface": [{"type": "surface", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "mesh3d": [{"type": "mesh3d", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "scatter": [{"fillpattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}, "type": "scatter"}], "parcoords": [{"type": "parcoords", "line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterpolargl": [{"type": "scatterpolargl", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "bar": [{"error_x": {"color": "#2a3f5f"}, "error_y": {"color": "#2a3f5f"}, "marker": {"line": {"color": "#E5ECF6", "width": 0.5}, "pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "bar"}], "scattergeo": [{"type": "scattergeo", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterpolar": [{"type": "scatterpolar", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "histogram": [{"marker": {"pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "histogram"}], "scattergl": [{"type": "scattergl", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatter3d": [{"type": "scatter3d", "line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattermapbox": [{"type": "scattermapbox", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterternary": [{"type": "scatterternary", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattercarpet": [{"type": "scattercarpet", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "carpet": [{"aaxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "baxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "type": "carpet"}], "table": [{"cells": {"fill": {"color": "#EBF0F8"}, "line": {"color": "white"}}, "header": {"fill": {"color": "#C8D4E3"}, "line": {"color": "white"}}, "type": "table"}], "barpolar": [{"marker": {"line": {"color": "#E5ECF6", "width": 0.5}, "pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "barpolar"}], "pie": [{"automargin": true, "type": "pie"}]}, "layout": {"autotypenumbers": "strict", "colorway": ["#636efa", "#EF553B", "#00cc96", "#ab63fa", "#FFA15A", "#19d3f3", "#FF6692", "#B6E880", "#FF97FF", "#FECB52"], "font": {"color": "#2a3f5f"}, "hovermode": "closest", "hoverlabel": {"align": "left"}, "paper_bgcolor": "white", "plot_bgcolor": "#E5ECF6", "polar": {"bgcolor": "#E5ECF6", "angularaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "radialaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "ternary": {"bgcolor": "#E5ECF6", "aaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "baxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "caxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "coloraxis": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "colorscale": {"sequential": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "sequentialminus": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "diverging": [[0, "#8e0152"], [0.1, "#c51b7d"], [0.2, "#de77ae"], [0.3, "#f1b6da"], [0.4, "#fde0ef"], [0.5, "#f7f7f7"], [0.6, "#e6f5d0"], [0.7, "#b8e186"], [0.8, "#7fbc41"], [0.9, "#4d9221"], [1, "#276419"]]}, "xaxis": {"gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "automargin": true, "zerolinewidth": 2}, "yaxis": {"gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "automargin": true, "zerolinewidth": 2}, "scene": {"xaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}, "yaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}, "zaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}}, "shapedefaults": {"line": {"color": "#2a3f5f"}}, "annotationdefaults": {"arrowcolor": "#2a3f5f", "arrowhead": 0, "arrowwidth": 1}, "geo": {"bgcolor": "white", "landcolor": "#E5ECF6", "subunitcolor": "white", "showland": true, "showlakes": true, "lakecolor": "white"}, "title": {"x": 0.05}, "mapbox": {"style": "light"}}}, "title": {"text": "Latency Percentiles"}, "yaxis": {"title": {"text": "Latency (ms)"}}, "plot_bgcolor": "white", "height": 350});</script>
+  <div class="chart" id="chart-radar"></div><script>Plotly.react("chart-radar", [{"fill": "toself", "fillcolor": "rgba(59, 130, 246, 0.2)", "line": {"color": "#3b82f6"}, "name": "claude-haiku-4-5-20251001", "r": [0.0, 0.0, 0.0, 1.0, 0, 0.0], "theta": ["Exact Match", "Semantic Sim.", "LLM Judge (norm)", "Non-Hallucination", "RAGAS Score", "Exact Match"], "type": "scatterpolar"}], {"template": {"data": {"histogram2dcontour": [{"type": "histogram2dcontour", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "choropleth": [{"type": "choropleth", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "histogram2d": [{"type": "histogram2d", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "heatmap": [{"type": "heatmap", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "heatmapgl": [{"type": "heatmapgl", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "contourcarpet": [{"type": "contourcarpet", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "contour": [{"type": "contour", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "surface": [{"type": "surface", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "mesh3d": [{"type": "mesh3d", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "scatter": [{"fillpattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}, "type": "scatter"}], "parcoords": [{"type": "parcoords", "line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterpolargl": [{"type": "scatterpolargl", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "bar": [{"error_x": {"color": "#2a3f5f"}, "error_y": {"color": "#2a3f5f"}, "marker": {"line": {"color": "#E5ECF6", "width": 0.5}, "pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "bar"}], "scattergeo": [{"type": "scattergeo", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterpolar": [{"type": "scatterpolar", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "histogram": [{"marker": {"pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "histogram"}], "scattergl": [{"type": "scattergl", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatter3d": [{"type": "scatter3d", "line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattermapbox": [{"type": "scattermapbox", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterternary": [{"type": "scatterternary", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattercarpet": [{"type": "scattercarpet", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "carpet": [{"aaxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "baxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "type": "carpet"}], "table": [{"cells": {"fill": {"color": "#EBF0F8"}, "line": {"color": "white"}}, "header": {"fill": {"color": "#C8D4E3"}, "line": {"color": "white"}}, "type": "table"}], "barpolar": [{"marker": {"line": {"color": "#E5ECF6", "width": 0.5}, "pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "barpolar"}], "pie": [{"automargin": true, "type": "pie"}]}, "layout": {"autotypenumbers": "strict", "colorway": ["#636efa", "#EF553B", "#00cc96", "#ab63fa", "#FFA15A", "#19d3f3", "#FF6692", "#B6E880", "#FF97FF", "#FECB52"], "font": {"color": "#2a3f5f"}, "hovermode": "closest", "hoverlabel": {"align": "left"}, "paper_bgcolor": "white", "plot_bgcolor": "#E5ECF6", "polar": {"bgcolor": "#E5ECF6", "angularaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "radialaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "ternary": {"bgcolor": "#E5ECF6", "aaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "baxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "caxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "coloraxis": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "colorscale": {"sequential": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "sequentialminus": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "diverging": [[0, "#8e0152"], [0.1, "#c51b7d"], [0.2, "#de77ae"], [0.3, "#f1b6da"], [0.4, "#fde0ef"], [0.5, "#f7f7f7"], [0.6, "#e6f5d0"], [0.7, "#b8e186"], [0.8, "#7fbc41"], [0.9, "#4d9221"], [1, "#276419"]]}, "xaxis": {"gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "automargin": true, "zerolinewidth": 2}, "yaxis": {"gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "automargin": true, "zerolinewidth": 2}, "scene": {"xaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}, "yaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}, "zaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}}, "shapedefaults": {"line": {"color": "#2a3f5f"}}, "annotationdefaults": {"arrowcolor": "#2a3f5f", "arrowhead": 0, "arrowwidth": 1}, "geo": {"bgcolor": "white", "landcolor": "#E5ECF6", "subunitcolor": "white", "showland": true, "showlakes": true, "lakecolor": "white"}, "title": {"x": 0.05}, "mapbox": {"style": "light"}}}, "polar": {"radialaxis": {"visible": true, "range": [0, 1]}}, "showlegend": true, "title": {"text": "Quality Radar"}, "height": 400});</script>
+  <div class="chart" id="chart-scatter"></div><script>Plotly.react("chart-scatter", [{"hovertemplate": "<b>%{text}</b><br>Latency: %{x:.0f}ms<br>Sem. Sim: %{y:.3f}<extra></extra>", "marker": {"color": ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"], "opacity": 0.7, "size": 10}, "mode": "markers+text", "text": ["qa_001", "qa_002", "qa_003", "qa_004", "qa_005", "qa_006", "qa_007", "qa_008", "qa_009", "qa_010"], "textposition": "top center", "x": [4326.45304093603, 4914.768624934368, 2828.6243330221623, 3181.220707949251, 5389.274375047535, 4252.470667008311, 5276.139874942601, 5153.805500012822, 4956.418709014542, 5068.719208007678], "y": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "type": "scatter"}], {"template": {"data": {"histogram2dcontour": [{"type": "histogram2dcontour", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "choropleth": [{"type": "choropleth", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "histogram2d": [{"type": "histogram2d", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "heatmap": [{"type": "heatmap", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "heatmapgl": [{"type": "heatmapgl", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "contourcarpet": [{"type": "contourcarpet", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "contour": [{"type": "contour", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "surface": [{"type": "surface", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "mesh3d": [{"type": "mesh3d", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "scatter": [{"fillpattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}, "type": "scatter"}], "parcoords": [{"type": "parcoords", "line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterpolargl": [{"type": "scatterpolargl", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "bar": [{"error_x": {"color": "#2a3f5f"}, "error_y": {"color": "#2a3f5f"}, "marker": {"line": {"color": "#E5ECF6", "width": 0.5}, "pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "bar"}], "scattergeo": [{"type": "scattergeo", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterpolar": [{"type": "scatterpolar", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "histogram": [{"marker": {"pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "histogram"}], "scattergl": [{"type": "scattergl", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatter3d": [{"type": "scatter3d", "line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattermapbox": [{"type": "scattermapbox", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterternary": [{"type": "scatterternary", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattercarpet": [{"type": "scattercarpet", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "carpet": [{"aaxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "baxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "type": "carpet"}], "table": [{"cells": {"fill": {"color": "#EBF0F8"}, "line": {"color": "white"}}, "header": {"fill": {"color": "#C8D4E3"}, "line": {"color": "white"}}, "type": "table"}], "barpolar": [{"marker": {"line": {"color": "#E5ECF6", "width": 0.5}, "pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "barpolar"}], "pie": [{"automargin": true, "type": "pie"}]}, "layout": {"autotypenumbers": "strict", "colorway": ["#636efa", "#EF553B", "#00cc96", "#ab63fa", "#FFA15A", "#19d3f3", "#FF6692", "#B6E880", "#FF97FF", "#FECB52"], "font": {"color": "#2a3f5f"}, "hovermode": "closest", "hoverlabel": {"align": "left"}, "paper_bgcolor": "white", "plot_bgcolor": "#E5ECF6", "polar": {"bgcolor": "#E5ECF6", "angularaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "radialaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "ternary": {"bgcolor": "#E5ECF6", "aaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "baxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "caxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "coloraxis": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "colorscale": {"sequential": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "sequentialminus": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "diverging": [[0, "#8e0152"], [0.1, "#c51b7d"], [0.2, "#de77ae"], [0.3, "#f1b6da"], [0.4, "#fde0ef"], [0.5, "#f7f7f7"], [0.6, "#e6f5d0"], [0.7, "#b8e186"], [0.8, "#7fbc41"], [0.9, "#4d9221"], [1, "#276419"]]}, "xaxis": {"gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "automargin": true, "zerolinewidth": 2}, "yaxis": {"gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "automargin": true, "zerolinewidth": 2}, "scene": {"xaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}, "yaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}, "zaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}}, "shapedefaults": {"line": {"color": "#2a3f5f"}}, "annotationdefaults": {"arrowcolor": "#2a3f5f", "arrowhead": 0, "arrowwidth": 1}, "geo": {"bgcolor": "white", "landcolor": "#E5ECF6", "subunitcolor": "white", "showland": true, "showlakes": true, "lakecolor": "white"}, "title": {"x": 0.05}, "mapbox": {"style": "light"}}}, "title": {"text": "Latency vs Semantic Similarity (red = hallucination)"}, "xaxis": {"title": {"text": "Latency (ms)"}}, "yaxis": {"title": {"text": "Semantic Similarity"}}, "plot_bgcolor": "white", "height": 400});</script>
+  <div class="chart" id="chart-cost"></div><script>Plotly.react("chart-cost", [{"marker": {"color": "#8b5cf6"}, "nbinsx": 10, "x": [2.0648, 1.8655999999999997, 1.0199999999999998, 1.3359999999999999, 2.0656, 2.0736, 2.064, 2.0616, 2.0328, 1.8719999999999999], "type": "histogram"}], {"template": {"data": {"histogram2dcontour": [{"type": "histogram2dcontour", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "choropleth": [{"type": "choropleth", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "histogram2d": [{"type": "histogram2d", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "heatmap": [{"type": "heatmap", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "heatmapgl": [{"type": "heatmapgl", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "contourcarpet": [{"type": "contourcarpet", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "contour": [{"type": "contour", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "surface": [{"type": "surface", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "mesh3d": [{"type": "mesh3d", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "scatter": [{"fillpattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}, "type": "scatter"}], "parcoords": [{"type": "parcoords", "line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterpolargl": [{"type": "scatterpolargl", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "bar": [{"error_x": {"color": "#2a3f5f"}, "error_y": {"color": "#2a3f5f"}, "marker": {"line": {"color": "#E5ECF6", "width": 0.5}, "pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "bar"}], "scattergeo": [{"type": "scattergeo", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterpolar": [{"type": "scatterpolar", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "histogram": [{"marker": {"pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "histogram"}], "scattergl": [{"type": "scattergl", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatter3d": [{"type": "scatter3d", "line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattermapbox": [{"type": "scattermapbox", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterternary": [{"type": "scatterternary", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattercarpet": [{"type": "scattercarpet", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "carpet": [{"aaxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "baxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "type": "carpet"}], "table": [{"cells": {"fill": {"color": "#EBF0F8"}, "line": {"color": "white"}}, "header": {"fill": {"color": "#C8D4E3"}, "line": {"color": "white"}}, "type": "table"}], "barpolar": [{"marker": {"line": {"color": "#E5ECF6", "width": 0.5}, "pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "barpolar"}], "pie": [{"automargin": true, "type": "pie"}]}, "layout": {"autotypenumbers": "strict", "colorway": ["#636efa", "#EF553B", "#00cc96", "#ab63fa", "#FFA15A", "#19d3f3", "#FF6692", "#B6E880", "#FF97FF", "#FECB52"], "font": {"color": "#2a3f5f"}, "hovermode": "closest", "hoverlabel": {"align": "left"}, "paper_bgcolor": "white", "plot_bgcolor": "#E5ECF6", "polar": {"bgcolor": "#E5ECF6", "angularaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "radialaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "ternary": {"bgcolor": "#E5ECF6", "aaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "baxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "caxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "coloraxis": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "colorscale": {"sequential": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "sequentialminus": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "diverging": [[0, "#8e0152"], [0.1, "#c51b7d"], [0.2, "#de77ae"], [0.3, "#f1b6da"], [0.4, "#fde0ef"], [0.5, "#f7f7f7"], [0.6, "#e6f5d0"], [0.7, "#b8e186"], [0.8, "#7fbc41"], [0.9, "#4d9221"], [1, "#276419"]]}, "xaxis": {"gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "automargin": true, "zerolinewidth": 2}, "yaxis": {"gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "automargin": true, "zerolinewidth": 2}, "scene": {"xaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}, "yaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}, "zaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}}, "shapedefaults": {"line": {"color": "#2a3f5f"}}, "annotationdefaults": {"arrowcolor": "#2a3f5f", "arrowhead": 0, "arrowwidth": 1}, "geo": {"bgcolor": "white", "landcolor": "#E5ECF6", "subunitcolor": "white", "showland": true, "showlakes": true, "lakecolor": "white"}, "title": {"x": 0.05}, "mapbox": {"style": "light"}}}, "title": {"text": "Cost Distribution per Query (m$)"}, "xaxis": {"title": {"text": "Cost (milli-USD)"}}, "yaxis": {"title": {"text": "Count"}}, "plot_bgcolor": "white", "height": 300});</script>
+</div>
+
+<h2>Per-Question Results</h2>
+<table id="results-table"><thead><tr><th>ID</th><th>Question</th><th>Answer</th><th>EM</th><th>Sem.Sim</th><th>Judge</th><th>Hall.</th><th>Latency</th><th>Cost</th><th>Error</th></tr></thead><tbody><tr><td>qa_001</td><td title="What is the attention mechanism in transformers and how is it computed?">What is the attention mechanism in transformers and how is it computed?</td><td title="# Attention Mechanism in Transformers
+
+## Overview
+
+The attention mechanism allows transformers to weigh the importance of different input tokens when processing each token. It enables the model to focus on relevant parts of the input, regardless of their distance.
+
+## The Core Concept
+
+Attention computes a weighted sum of values based on how well queries match keys:
+
+**Attention(Q, K, V) = softmax(QK^T / √d_k) × V**
+
+Where:
+- **Q (Query)**: What am I looking for?
+- **K (Key)**: What can I offer?
+- **V (Value)**: What information do I provide?
+- **d_k**: Dimension of keys (for scaling)
+
+## Step-by-Step Computation
+
+### 1. **Linear Projections**
+```
+Q = X × W^Q
+K = X × W^K
+V = X × W^V
+```
+Input sequence X is projected into query, key, and value spaces.
+
+### 2. **Compute Similarity Scores**
+```
+Scores = Q × K^T / √d_k
+```
+- Multiply queries by transposed keys
+- Divide by √d_k (prevents exploding gradients)
+- Results in shape: [seq_len × seq_len]
+
+### 3. **Apply Softmax**
+```
+Attention_weights = softmax(Scores)
+```
+Normalizes scores to probability distribution (sums to 1).
+
+### 4. **Weighted Sum**
+```
+Output = Attention_weights × V
+```
+Each token is now a weighted combination of all values.
+
+## Example
+
+```python
+import torch
+import torch.nn.functional as F
+
+def scaled_dot_product_attention(Q, K, V, mask=None):
+    d_k = Q.shape[-1]
+    
+    # Compute attention scores
+    scores = torch.matmul(Q, K.transpose(-2, -1)) / torch.sqrt(torch.tensor(d_k))
+    
+    # Apply mask (optional, for preventing attention to future tokens)
+    if mask is not None:
+        scores = scores.masked_fill(mask == 0, float('-inf'))
+    "># Attention Mechanism in Transformers
+
+## Overview
+
+The attention mechanism allo…</td><td class="center">✗</td><td class="center">0.000</td><td class="center">None</td><td class="center">—</td><td class="center">4326ms</td><td class="center">$2.065m</td><td class="error"></td></tr>
+<tr><td>qa_002</td><td title="Why is positional encoding necessary in transformer models?">Why is positional encoding necessary in transformer models?</td><td title="# Why Positional Encoding is Necessary in Transformers
+
+## The Core Problem
+
+Transformers use **self-attention**, which treats input tokens as a set with no inherent order. Without positional information, the model cannot distinguish between:
+- "The cat sat on the mat"
+- "The mat sat on the cat"
+
+Both would produce identical attention computations since attention operates symmetrically on all tokens.
+
+## Key Reasons for Positional Encoding
+
+### 1. **Self-Attention is Order-Agnostic**
+Self-attention computes relationships between all pairs of tokens equally:
+```
+Attention(Q, K, V) = softmax(QK^T/√d_k)V
+```
+The mechanism itself has no notion of "before" or "after."
+
+### 2. **Preserving Sequence Information**
+Positional encodings inject sequential structure by adding position-dependent values to each token embedding, allowing the model to learn:
+- Where tokens are in the sequence
+- Which tokens are nearby (local context)
+- Long-range dependencies
+
+## Common Approaches
+
+### **Absolute Positional Encoding** (Original Transformer)
+Uses sine and cosine functions at different frequencies:
+```
+PE(pos, 2i) = sin(pos / 10000^(2i/d_model))
+PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))
+```
+✓ Deterministic, smooth interpolation  
+✗ May not extrapolate well beyond training length
+
+### **Learned Positional Embeddings**
+✓ More flexible  
+✗ Can't generalize to longer sequences
+
+### **Relative Positional Encodings**
+✓ Better generalization to longer sequences  
+✓ Focuses on relative distances
+
+## The Bottom Line
+
+Positional encoding transforms a **set-based operation** (self-attention) into a **sequence-aware** one, which is essential for language and any sequential data."># Why Positional Encoding is Necessary in Transformers
+
+## The Core Problem
+
+Tra…</td><td class="center">✗</td><td class="center">0.000</td><td class="center">None</td><td class="center">—</td><td class="center">4915ms</td><td class="center">$1.866m</td><td class="error"></td></tr>
+<tr><td>qa_003</td><td title="What are the two pre-training objectives used in BERT?">What are the two pre-training objectives used in BERT?</td><td title="# BERT's Two Pre-training Objectives
+
+## 1. **Masked Language Modeling (MLM)**
+- Randomly masks 15% of tokens in the input sequence
+- The model must predict the original masked tokens based on context
+- This forces the model to learn bidirectional representations (understanding both left and right context)
+
+## 2. **Next Sentence Prediction (NSP)**
+- Trains the model to understand relationships between sentence pairs
+- Given two sentences, the model predicts whether the second sentence actually follows the first in the original text
+- 50% of training pairs are consecutive sentences (positive examples)
+- 50% are random sentences (negative examples)
+- This helps the model learn sentence-level semantic relationships
+
+---
+
+## Why Both?
+
+These objectives work together to pre-train a model that understands both:
+- **Local semantics** (through MLM): word-level meaning and context
+- **Global coherence** (through NSP): document-level structure and sentence relationships
+
+This dual-objective approach enabled BERT to achieve strong performance on a wide range of downstream NLP tasks when fine-tuned."># BERT's Two Pre-training Objectives
+
+## 1. **Masked Language Modeling (MLM)**
+-…</td><td class="center">✗</td><td class="center">0.000</td><td class="center">None</td><td class="center">—</td><td class="center">2829ms</td><td class="center">$1.020m</td><td class="error"></td></tr>
+<tr><td>qa_004</td><td title="What is the key architectural difference between GPT and BERT?">What is the key architectural difference between GPT and BERT?</td><td title="# Key Architectural Differences: GPT vs BERT
+
+## **Decoder-only vs Encoder-only**
+
+The fundamental difference is their **transformer architecture design**:
+
+- **GPT**: Decoder-only model
+  - Uses only the decoder stack of the transformer
+  - Employs **causal (autoregressive) attention** - can only attend to previous tokens
+  - Generates text by predicting one token at a time
+
+- **BERT**: Encoder-only model
+  - Uses only the encoder stack of the transformer
+  - Employs **bidirectional attention** - attends to all tokens in both directions
+  - Processes entire sequences at once
+
+## **Why This Matters**
+
+| Aspect | GPT | BERT |
+|--------|-----|------|
+| **Training goal** | Next token prediction (causal) | Masked language modeling (bidirectional) |
+| **Best for** | Text generation, completion | Classification, understanding, representation |
+| **Information flow** | Left-to-right only | Full context in both directions |
+
+## **Practical Implication**
+
+- **GPT** naturally excels at *generative tasks* (like ChatGPT)
+- **BERT** excels at *discriminative tasks* (sentiment analysis, NER, question answering)
+
+This architectural choice reflects their intended purposes: GPT was designed for open-ended generation, while BERT was designed for understanding and extracting information from text."># Key Architectural Differences: GPT vs BERT
+
+## **Decoder-only vs Encoder-only*…</td><td class="center">✗</td><td class="center">0.000</td><td class="center">None</td><td class="center">—</td><td class="center">3181ms</td><td class="center">$1.336m</td><td class="error"></td></tr>
+<tr><td>qa_005</td><td title="How does the Word2Vec skip-gram model learn word embeddings?">How does the Word2Vec skip-gram model learn word embeddings?</td><td title="# Word2Vec Skip-Gram Model
+
+The skip-gram model learns word embeddings by predicting **context words from a target word**. Here's how it works:
+
+## Core Concept
+
+```
+Target word → Predict surrounding context words
+    "bank"  → "river", "of", "the"
+```
+
+## Training Process
+
+### 1. **Architecture**
+```
+Input Layer (target word)
+    ↓
+Hidden Layer (embedding vector)
+    ↓
+Output Layer (context word probabilities)
+```
+
+- **Input**: One-hot encoded word (vocabulary size)
+- **Hidden**: Embedding vector (e.g., 300 dimensions)
+- **Output**: Probability distribution over vocabulary
+
+### 2. **Training Objective**
+
+Maximize the probability of context words given the target word:
+
+```
+maximize: Σ log P(w_context | w_target)
+```
+
+Using **softmax**:
+```
+P(w_context | w_target) = exp(v'_context · v_target) / Σ exp(v'_j · v_target)
+```
+
+Where `v` and `v'` are embedding vectors.
+
+### 3. **Training Steps**
+
+```python
+# Pseudo-code
+for each word in corpus:
+    # Define window (e.g., ±2 words)
+    context_words = get_surrounding_words(word, window_size=2)
+    
+    # For each context word, optimize:
+    # P(context_word | target_word)
+    
+    # Update embeddings using gradient descent
+```
+
+## Example with Window Size 2
+
+```
+Text: "The quick brown fox jumps"
+               ↑
+          Target word: "brown"
+
+Context words to predict: ["quick", "fox"]
+```
+
+## Key Optimizations
+
+### **Negative Sampling** (reduces computational cost)
+Instead of softmax over entire vocabulary, sample negative examples:
+
+```python
+# Instead of: P(w_context | w_target)
+# Do: Maximize log-sigmoid(v'_context · v_target)
+#     AND minimize for k random negative samples
+```
+
+Benefits:
+- Reduces computation from O(V) → O"># Word2Vec Skip-Gram Model
+
+The skip-gram model learns word embeddings by predic…</td><td class="center">✗</td><td class="center">0.000</td><td class="center">None</td><td class="center">—</td><td class="center">5389ms</td><td class="center">$2.066m</td><td class="error"></td></tr>
+<tr><td>qa_006</td><td title="What is the difference between batch gradient descent, stochastic gradient descent (SGD), and mini-batch gradient descent?">What is the difference between batch gradient descent, stochastic gradient desce…</td><td title="# Gradient Descent Variants: Key Differences
+
+## 1. **Batch Gradient Descent (BGD)**
+
+**Updates weights using the entire dataset in one iteration**
+
+```python
+for epoch in range(num_epochs):
+    gradient = compute_gradient(X_train, y_train)  # All data
+    weights -= learning_rate * gradient
+```
+
+**Characteristics:**
+- ✅ Stable, smooth convergence
+- ✅ Deterministic updates
+- ❌ Slow with large datasets
+- ❌ High memory requirements
+- ❌ May get stuck in local minima
+
+---
+
+## 2. **Stochastic Gradient Descent (SGD)**
+
+**Updates weights using one sample at a time**
+
+```python
+for epoch in range(num_epochs):
+    for sample in X_train:
+        gradient = compute_gradient(sample, label)  # One sample
+        weights -= learning_rate * gradient
+```
+
+**Characteristics:**
+- ✅ Fast, memory efficient
+- ✅ Better escape from local minima (noise helps)
+- ✅ Online learning capability
+- ❌ Noisy, erratic updates
+- ❌ Harder to converge
+- ❌ Needs careful learning rate tuning
+
+---
+
+## 3. **Mini-Batch Gradient Descent**
+
+**Updates weights using a small batch (typically 32-256 samples)**
+
+```python
+for epoch in range(num_epochs):
+    for batch in create_batches(X_train, batch_size=32):
+        gradient = compute_gradient(batch, batch_labels)
+        weights -= learning_rate * gradient
+```
+
+**Characteristics:**
+- ✅ **Best of both worlds**: stable + efficient
+- ✅ Leverages hardware parallelization (GPUs)
+- ✅ Good convergence balance
+- ✅ Reduced variance vs. SGD
+- ✅ Industry standard
+
+---
+
+## **Visual Comparison**
+
+| Aspect | Batch | Stochastic | Mini-Batch |
+|--------|-------|-----------|-----------|
+| **Samples/Update** | All N | 1 "># Gradient Descent Variants: Key Differences
+
+## 1. **Batch Gradient Descent (BG…</td><td class="center">✗</td><td class="center">0.000</td><td class="center">None</td><td class="center">—</td><td class="center">4252ms</td><td class="center">$2.074m</td><td class="error"></td></tr>
+<tr><td>qa_007</td><td title="What problem does batch normalization solve and how does it work?">What problem does batch normalization solve and how does it work?</td><td title="# Batch Normalization: Problem and Solution
+
+## Problems It Solves
+
+### 1. **Internal Covariate Shift**
+The primary issue is that during training, the distribution of inputs to each layer changes as parameters update. This is called *internal covariate shift*.
+
+**Why this matters:**
+- Each layer must continuously readjust to new input distributions
+- Training becomes slower and less stable
+- Requires lower learning rates to avoid divergence
+
+### 2. **Related Issues**
+- Vanishing/exploding gradients
+- Sensitivity to weight initialization
+- Reduced learning rate flexibility
+
+## How Batch Normalization Works
+
+### Basic Mechanism
+
+For each mini-batch, normalize activations across the batch dimension:
+
+```
+μ_batch = (1/m) Σ x_i              # batch mean
+σ_batch = √((1/m) Σ (x_i - μ)² + ε)  # batch std dev
+
+x̂_i = (x_i - μ_batch) / σ_batch    # normalize
+```
+
+### Then Rescale and Shift
+
+```
+y_i = γ * x̂_i + β
+```
+
+Where **γ** (scale) and **β** (shift) are learnable parameters that allow the network to:
+- Recover the original distribution if helpful
+- Learn the optimal scale and center
+
+### Visual Example
+
+```
+Input distribution  →  Normalize  →  Rescale  →  Output
+(mean=50, std=15)     (μ=0, σ=1)    (γ, β)     (learned params)
+```
+
+## Key Benefits
+
+| Benefit | Impact |
+|---------|--------|
+| **Faster training** | Can use higher learning rates |
+| **Regularization effect** | Reduces need for dropout (in some cases) |
+| **Less initialization-sensitive** | More forgiving of weight initialization |
+| **Smoother gradients** | Easier optimization landscape |
+
+## Important Details
+
+**During training:** Use batch statistics (μ, σ)
+
+**During inference:** Use running averages of training statistics (not computed from single test samples)
+
+```python
+# PyTorch example
+bn = nn.Batch"># Batch Normalization: Problem and Solution
+
+## Problems It Solves
+
+### 1. **Int…</td><td class="center">✗</td><td class="center">0.000</td><td class="center">None</td><td class="center">—</td><td class="center">5276ms</td><td class="center">$2.064m</td><td class="error"></td></tr>
+<tr><td>qa_008</td><td title="How does dropout work as a regularization technique?">How does dropout work as a regularization technique?</td><td title="# How Dropout Works as Regularization
+
+Dropout is a simple yet powerful technique that prevents neural networks from overfitting by randomly disabling neurons during training.
+
+## Core Mechanism
+
+**During training:**
+- Each neuron is randomly "dropped out" (set to 0) with probability *p* (typically 0.5)
+- Only the remaining neurons process information
+- Weights are updated based on this reduced network
+
+**During testing:**
+- All neurons are active
+- Weights are scaled by (1 - p) to account for the expected number of active neurons
+
+```python
+import torch
+import torch.nn as nn
+
+# Dropout layer with p=0.5
+dropout = nn.Dropout(p=0.5)
+
+x = torch.randn(32, 100)  # batch of 32, 100 features
+
+# Training mode
+x_dropped = dropout(x)  # ~50% of values randomly set to 0
+
+# Inference mode
+dropout.eval()
+x_test = dropout(x)  # All values retained (or scaled)
+```
+
+## Why It Prevents Overfitting
+
+### 1. **Ensemble Effect**
+- Each training iteration uses a different "sub-network"
+- Equivalent to training multiple models and averaging them
+- Prevents co-adaptation (neurons relying on specific partners)
+
+### 2. **Forced Robustness**
+- Neurons can't rely on always having the same inputs
+- Learn more robust, generalizable features
+- Each neuron becomes useful independently
+
+### 3. **Reduced Complexity**
+- Effectively reduces model capacity during training
+- Similar to training smaller networks simultaneously
+
+## Visual Example
+
+```
+Without Dropout:          With Dropout (p=0.5):
+[●]──→[●]──→[●]          [●]──→[ ]──→[●]
+[●]──→[●]──→[●]          [ ]──→[●]──→[●]
+[●]──→[●]──→[●]          [●]──→[●]──→[ ]
+
+Risk: Co-adaptation       Benefit: Robustness
+```
+
+## Key Hyperparameter
+
+| Layer Type | Typical Dropout Rate |
+|----------"># How Dropout Works as Regularization
+
+Dropout is a simple yet powerful techniqu…</td><td class="center">✗</td><td class="center">0.000</td><td class="center">None</td><td class="center">—</td><td class="center">5154ms</td><td class="center">$2.062m</td><td class="error"></td></tr>
+<tr><td>qa_009</td><td title="What is transfer learning and why is it effective for NLP tasks?">What is transfer learning and why is it effective for NLP tasks?</td><td title="# Transfer Learning in NLP
+
+## What is Transfer Learning?
+
+Transfer learning involves taking a pre-trained model (trained on a large dataset) and adapting it to a new, typically smaller task. Rather than training from scratch, you leverage knowledge learned on the source task.
+
+**Basic workflow:**
+```
+Large Dataset → Pre-train Model → Fine-tune on Target Task
+     (General)                          (Specific)
+```
+
+## Why It's Effective for NLP
+
+### 1. **Language Representation Reuse**
+Pre-trained models learn fundamental language patterns (grammar, semantics, syntax) that transfer across tasks:
+- Understanding "negation" helps with sentiment analysis AND question answering
+- Word relationships learned on one task aid performance on another
+
+### 2. **Computational Efficiency**
+- Training from scratch requires massive compute resources
+- Fine-tuning leverages pre-learned representations, reducing training time/cost dramatically
+
+```python
+# Example: Fine-tuning BERT
+from transformers import AutoModelForSequenceClassification
+
+model = AutoModelForSequenceClassification.from_pretrained(
+    "bert-base-uncased",  # Pre-trained weights
+    num_labels=2          # Adapt to your task
+)
+# Train only on your labeled data (hours vs. weeks)
+```
+
+### 3. **Small Dataset Performance**
+Without transfer learning, training on limited data causes overfitting. Pre-trained models provide robust features with little data:
+- Sentiment classification: works well with ~100 examples
+- From-scratch: needs thousands
+
+### 4. **Improved Generalization**
+Models learn broad linguistic knowledge that generalizes better than task-specific patterns alone.
+
+## Common NLP Transfer Learning Examples
+
+| Source Task | Target Task | Benefit |
+|---|---|---|
+| Language modeling | Classification | General language understanding |
+| Machine translation | Question answering | Semantic relationships |
+| Named entity recognition | Relation extraction | Entity representations |
+
+## Key Models
+
+- **BERT**: Bidirectional context understanding
+- **GPT**: Autoregressive language modeling
+- **T5**: Unified text-to-text framework
+
+Transfer learning is now the dominant paradigm in NLP—training from scratch is rarely done anymore."># Transfer Learning in NLP
+
+## What is Transfer Learning?
+
+Transfer learning inv…</td><td class="center">✗</td><td class="center">0.000</td><td class="center">None</td><td class="center">—</td><td class="center">4956ms</td><td class="center">$2.033m</td><td class="error"></td></tr>
+<tr><td>qa_010</td><td title="What is Reinforcement Learning from Human Feedback (RLHF) and why is it used to align LLMs?">What is Reinforcement Learning from Human Feedback (RLHF) and why is it used to …</td><td title="# Reinforcement Learning from Human Feedback (RLHF)
+
+## What It Is
+
+RLHF is a technique that trains AI models using feedback from human evaluators rather than fixed reward signals. The process typically has three stages:
+
+1. **Supervised Fine-Tuning (SFT)**: Train the base model on high-quality example outputs
+2. **Reward Model Training**: Have humans rank different model outputs, then train a separate "reward model" to predict which outputs humans prefer
+3. **RL Optimization**: Use reinforcement learning (typically PPO) to adjust the language model to maximize the reward model's scores
+
+## Why Align LLMs With RLHF?
+
+**The Core Problem**: Raw language models optimize for next-token prediction accuracy, not helpfulness, honesty, or harmlessness.
+
+### Key Reasons for Using RLHF:
+
+| Goal | Why RLHF Works |
+|------|---|
+| **Capture subjective preferences** | Humans can judge quality in ways hard to specify in code (tone, relevance, nuance) |
+| **Scale human values** | Reward model generalizes human feedback to new situations |
+| **Reduce harmful outputs** | Rank and penalize undesirable behaviors |
+| **Improve factuality** | Reward accurate, supported claims |
+
+## Practical Example
+
+Without RLHF, a model might:
+- Give technically correct but unhelpful answers
+- Be verbose and evasive
+- Produce harmful content when asked
+
+With RLHF, humans teach it to prioritize clarity, honesty, and safety.
+
+## Limitations
+
+- **Expensive**: Requires significant human annotation
+- **Value alignment challenges**: Whose preferences? Potential bias in raters
+- **Reward hacking**: Model optimizes for the reward signal rather than true quality
+- **Brittleness**: Can fail on out-of-distribution requests
+
+RLHF remains the most practical approach today, though research into alternatives (like constitutional AI) is ongoing."># Reinforcement Learning from Human Feedback (RLHF)
+
+## What It Is
+
+RLHF is a te…</td><td class="center">✗</td><td class="center">0.000</td><td class="center">None</td><td class="center">—</td><td class="center">5069ms</td><td class="center">$1.872m</td><td class="error"></td></tr></tbody></table>
+
+</body>
+</html>
