@@ -29,10 +29,10 @@ st.set_page_config(
 # ── Pre-loaded result files (committed to the repo) ───────────────────────────
 
 PRELOADED_FILES = [
-    Path("results/groq_70b_full.json"),  # llama-3.3-70b-versatile (all metrics)
-    Path("results/groq_8b_full.json"),   # llama-3.1-8b-instant (all metrics)
-    Path("results/claude_haiku.json"),   # claude-haiku-4-5-20251001
-    Path("results/claude_opus.json"),    # claude-opus-4-5
+    Path("results/groq_70b_full.json"),      # llama-3.3-70b-versatile (all metrics)
+    Path("results/groq_8b_full.json"),       # llama-3.1-8b-instant (all metrics)
+    Path("results/claude_haiku_full.json"),  # claude-haiku-4-5-20251001 (all metrics)
+    Path("results/claude_opus_full.json"),   # claude-opus-4-5 (all metrics)
 ]
 
 # ── Helpers (identical to dashboard/app.py) ───────────────────────────────────
