@@ -369,6 +369,6 @@ with tab_qa:
 st.divider()
 st.caption(
     "**LLM Evaluation Harness** — "
-    "[GitHub](https://github.com/your-handle/llm-eval-harness) · "
+    "[GitHub](https://github.com/madhavanbalaji02/llm-eval-harness) · "
     "Built with Streamlit + Plotly + Groq"
 )
