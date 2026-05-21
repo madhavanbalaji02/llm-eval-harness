@@ -293,14 +293,15 @@ with tab_charts:
             ]
             closed_vals = vals + [vals[0]]
             closed_labels = labels + [labels[0]]
+            # Use lines + markers (no fill) so overlapping models stay visible
             fig_radar.add_trace(go.Scatterpolar(
                 r=closed_vals,
                 theta=closed_labels,
-                fill="toself",
+                fill="none",
                 name=short,
-                opacity=0.25,
-                fillcolor=color,
-                line={"color": color, "width": 3},
+                line={"color": color, "width": 4},
+                marker={"size": 10, "color": color, "symbol": "circle"},
+                opacity=1.0,
             ))
 
         fig_radar.update_layout(
