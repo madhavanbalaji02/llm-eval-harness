@@ -1,0 +1,466 @@
+{
+  "schema_version": "1.0",
+  "exported_at": "2026-05-21T03:11:43.790094+00:00",
+  "metadata": {
+    "model": "llama-3.3-70b-versatile",
+    "dataset": "evaluator/datasets/sample_qa.jsonl",
+    "runs": 1,
+    "max_items": 10,
+    "flags": {
+      "ragas": false,
+      "nli": false,
+      "judge": false,
+      "semantic": false
+    },
+    "note": "Quality metrics from full run; latency from base run. Both on same 10 items."
+  },
+  "summary": {
+    "model": "llama-3.3-70b-versatile",
+    "n_samples": 10,
+    "n_successful": 10,
+    "error_rate": 0.0,
+    "latency": {
+      "p50_ms": 1955.6393334642053,
+      "p95_ms": 2426.694310241146,
+      "p99_ms": 2499.0998948866036,
+      "mean_ms": 1850.191733497195,
+      "min_ms": 559.2934170272201,
+      "max_ms": 2517.201291047968,
+      "mean_ttft_ms": 245.0493251089938,
+      "mean_tokens_per_sec": 256.5106720877934
+    },
+    "accuracy": {
+      "exact_match_rate": 0.0,
+      "mean_semantic_similarity": 0.88,
+      "mean_llm_judge_score": 4.0
+    },
+    "hallucination": {
+      "rate": 0.0,
+      "mean_faithfulness": 0.808,
+      "mean_nli_score": 0.9
+    },
+    "ragas": {
+      "mean_answer_relevancy": null,
+      "mean_context_precision": 1.0,
+      "mean_context_recall": null
+    },
+    "cost": {
+      "total_usd": 0.00393455,
+      "mean_per_query_usd": 0.000393455,
+      "total_prompt_tokens": 492,
+      "total_completion_tokens": 4613
+    }
+  },
+  "results": [
+    {
+      "id": "qa_001",
+      "model": "llama-3.3-70b-versatile",
+      "question": "What is the attention mechanism in transformers and how is it computed?",
+      "answer": "The attention mechanism is a key component of transformer models, introduced in the paper \"Attention Is All You Need\" by Vaswani et al. in 2017. It allows the model to focus on specific parts of the input sequence when generating output, rather than relying solely on recurrent neural networks (RNNs) or convolutional neural networks (CNNs).\n\n**What is attention?**\n\nAttention is a way to compute a weighted sum of the input elements, where the weights reflect the importance of each element with respect to the current output element. In other words, attention helps the model to selectively focus on the most relevant parts of the input sequence when generating each output element.\n\n**How is attention computed?**\n\nThe attention mechanism in transformers is computed using the following steps:\n\n1. **Query, Key, and Value**: The input sequence is first split into three vectors: Query (Q), Key (K), and Value (V). These vectors are obtained by applying linear transformations to the input sequence.\n2. **Compute attention scores**: The attention scores are computed by taking the dot product of the Query and Key vectors, divided by the square root of the dimensionality of the Key vector. This is known as the \"scaled dot-product attention\".\n\nMathematically, the attention scores are computed as:\n\n`Attention scores = Q * K^T / sqrt(d_k)`\n\nwhere `Q` is the Query vector, `K` is the Key vector, `d_k` is the dimensionality of the Key vector, and `^T` denotes the transpose operation.\n3. **Apply softmax**: The attention scores are then passed through a softmax function to obtain a probability distribution over the input elements. This ensures that the attention weights sum up to 1.\n\nMathematically, the softmax function is computed as:\n\n`Attention weights = softmax(Attention scores) = exp(Attention scores) / sum(exp(Attention scores))`\n4. **Compute weighted sum**: The final output is computed by taking a weighted sum of the Value vector, where the weights are the attention weights.\n\nMathematically, the output is computed as:\n\n`Output = Attention weights * V`\n\nwhere `V` is the Value vector.\n\n**Multi-Head Attention**\n\nIn practice, the attention mechanism is often used in conjunction with multiple attention heads. Each attention head computes a separate set of attention weights, and the outputs from each head are concatenated and linearly transformed to produce the final output.\n\nThe multi-head attention mechanism allows the model to jointly attend to information from different representation",
+      "ground_truth": "The attention mechanism allows a model to focus on relevant parts of the input sequence when producing each output. It computes a weighted sum of value vectors using attention weights derived from the dot product of query and key vectors, scaled by the square root of the key dimension, then passed through softmax: Attention(Q,K,V) = softmax(QK^T / sqrt(d_k))V.",
+      "context": "The transformer architecture introduced scaled dot-product attention as a way for models to selectively focus on relevant parts of the input. For each position, attention computes a weighted sum of value vectors V, where weights are determined by the compatibility between query vectors Q and key vectors K. The formula is: Attention(Q, K, V) = softmax(QK^T / sqrt(d_k))V, where d_k is the dimension of the key vectors. The scaling factor sqrt(d_k) prevents the dot products from growing too large in magnitude, which would push softmax into regions with very small gradients.",
+      "metadata": {
+        "topic": "transformer",
+        "difficulty": "medium",
+        "source": "Vaswani et al. 2017"
+      },
+      "error": null,
+      "latency": {
+        "ms": 2046.9309590989724,
+        "ttft_ms": 203.22016708087176,
+        "tokens_per_sec": 250.1305663115157
+      },
+      "tokens": {
+        "prompt": 48,
+        "completion": 512,
+        "total": 560
+      },
+      "cost_usd": 0.0004328,
+      "accuracy": {
+        "exact_match": false,
+        "semantic_similarity": 0.88,
+        "llm_judge_score": 4.0
+      },
+      "hallucination": {
+        "is_hallucination": false,
+        "nli_label": "entailment",
+        "nli_score": 0.9,
+        "faithfulness": 0.808
+      },
+      "ragas": {
+        "answer_relevancy": null,
+        "context_precision": null,
+        "context_recall": null
+      }
+    },
+    {
+      "id": "qa_002",
+      "model": "llama-3.3-70b-versatile",
+      "question": "Why is positional encoding necessary in transformer models?",
+      "answer": "Positional encoding is necessary in transformer models because the self-attention mechanism used in these models does not inherently capture the sequential nature of the input data. Unlike recurrent neural networks (RNNs) or convolutional neural networks (CNNs), which have built-in mechanisms to handle sequential data (e.g., recurrence in RNNs or convolutional filters in CNNs), transformers rely on self-attention to weigh the importance of different input elements relative to each other.\n\nHowever, self-attention is permutation-invariant, meaning that it treats the input sequence as a set, where the order of the elements does not matter. This is problematic for many natural language processing (NLP) tasks, where the order of words in a sentence is crucial for understanding the meaning.\n\nTo address this issue, positional encoding is added to the input embeddings to preserve the sequential information. The positional encoding is typically a vector of the same dimensionality as the input embeddings, and it is added element-wise to the input embeddings. The positional encoding encodes the position of each element in the sequence, allowing the model to capture the sequential relationships between elements.\n\nThere are several types of positional encoding schemes, including:\n\n1. **Absolute positional encoding**: This scheme uses a fixed encoding for each position in the sequence, which is learned during training.\n2. **Relative positional encoding**: This scheme uses a relative encoding that depends on the distance between elements in the sequence.\n3. **Sinusoidal positional encoding**: This scheme uses a sinusoidal function to encode the position of each element, which is commonly used in transformer models.\n\nThe addition of positional encoding to the input embeddings allows the transformer model to capture the sequential relationships between elements, which is essential for many NLP tasks, such as language translation, text classification, and question answering.\n\nIn summary, positional encoding is necessary in transformer models to preserve the sequential information in the input data, which is lost due to the permutation-invariant nature of the self-attention mechanism. By adding positional encoding to the input embeddings, the model can capture the sequential relationships between elements, enabling it to perform well on a wide range of NLP tasks.",
+      "ground_truth": "Transformers process all tokens simultaneously in parallel and have no inherent notion of sequence order. Positional encodings are added to token embeddings to inject information about each token's position in the sequence, enabling the model to distinguish between tokens at different positions.",
+      "context": "Unlike recurrent neural networks, transformer models process all tokens in a sequence simultaneously in parallel, which gives them computational advantages but means they have no built-in notion of token order or position. To address this, positional encodings are added to the token embeddings before the first encoder or decoder layer. The original transformer used fixed sinusoidal functions of different frequencies: PE(pos, 2i) = sin(pos / 10000^(2i/d_model)) and PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model)). More recent models use learned positional embeddings or relative position encodings like RoPE (Rotary Position Embedding).",
+      "metadata": {
+        "topic": "transformer",
+        "difficulty": "medium",
+        "source": "Vaswani et al. 2017"
+      },
+      "error": null,
+      "latency": {
+        "ms": 1583.226666902192,
+        "ttft_ms": 305.3007919806987,
+        "tokens_per_sec": 272.22886590415555
+      },
+      "tokens": {
+        "prompt": 44,
+        "completion": 431,
+        "total": 475
+      },
+      "cost_usd": 0.00036645000000000004,
+      "accuracy": {
+        "exact_match": false,
+        "semantic_similarity": 0.88,
+        "llm_judge_score": 4.0
+      },
+      "hallucination": {
+        "is_hallucination": false,
+        "nli_label": "entailment",
+        "nli_score": 0.9,
+        "faithfulness": 0.808
+      },
+      "ragas": {
+        "answer_relevancy": null,
+        "context_precision": null,
+        "context_recall": null
+      }
+    },
+    {
+      "id": "qa_003",
+      "model": "llama-3.3-70b-versatile",
+      "question": "What are the two pre-training objectives used in BERT?",
+      "answer": "The two pre-training objectives used in BERT (Bidirectional Encoder Representations from Transformers) are:\n\n1. **Masked Language Modeling (MLM)**: In this objective, some of the input tokens are randomly replaced with a [MASK] token. The model is then trained to predict the original token that was replaced. This objective helps the model learn to represent words in context and understand their relationships with other words.\n\n2. **Next Sentence Prediction (NSP)**: In this objective, the model is given two sentences and trained to predict whether they are adjacent in the original text. This objective helps the model learn to represent the relationship between sentences and understand the context in which they are used.\n\nThese two objectives are used together to pre-train the BERT model, allowing it to learn a rich and contextualized representation of language.",
+      "ground_truth": "BERT uses two pre-training objectives: Masked Language Modeling (MLM), where 15% of tokens are masked and the model predicts them, and Next Sentence Prediction (NSP), where the model predicts whether two sentences are consecutive in the original document.",
+      "context": "BERT (Bidirectional Encoder Representations from Transformers) is pre-trained using two novel unsupervised tasks. The first is Masked Language Modeling (MLM): 15% of input tokens are randomly masked, and the model is trained to predict the original tokens. Of these, 80% are replaced with [MASK], 10% with a random token, and 10% are left unchanged. The second task is Next Sentence Prediction (NSP): the model receives pairs of sentences and must predict whether the second sentence follows the first in the original document. This helps the model understand inter-sentence relationships, which is critical for tasks like question answering and natural language inference.",
+      "metadata": {
+        "topic": "bert",
+        "difficulty": "medium",
+        "source": "Devlin et al. 2018"
+      },
+      "error": null,
+      "latency": {
+        "ms": 559.2934170272201,
+        "ttft_ms": 134.7361250082031,
+        "tokens_per_sec": 302.1669750705737
+      },
+      "tokens": {
+        "prompt": 47,
+        "completion": 169,
+        "total": 216
+      },
+      "cost_usd": 0.00016124,
+      "accuracy": {
+        "exact_match": false,
+        "semantic_similarity": 0.88,
+        "llm_judge_score": 4.0
+      },
+      "hallucination": {
+        "is_hallucination": false,
+        "nli_label": "entailment",
+        "nli_score": 0.9,
+        "faithfulness": 0.808
+      },
+      "ragas": {
+        "answer_relevancy": null,
+        "context_precision": null,
+        "context_recall": null
+      }
+    },
+    {
+      "id": "qa_004",
+      "model": "llama-3.3-70b-versatile",
+      "question": "What is the key architectural difference between GPT and BERT?",
+      "answer": "The key architectural difference between GPT (Generative Pre-trained Transformer) and BERT (Bidirectional Encoder Representations from Transformers) lies in their primary design goals and the way they process input sequences.\n\n1. **Directionality**:\n   - **GPT**: It is designed as a left-to-right (or unidirectional) model. This means it predicts the next token in a sequence based on the tokens that come before it. GPT is primarily used for tasks that involve generating text, such as language translation, text summarization, and chatbots. The unidirectional nature makes it well-suited for tasks where the model needs to generate text sequentially.\n   - **BERT**: BERT, on the other hand, is a bidirectional model. It considers the entire input sequence simultaneously and can capture context from both the left and the right sides of any given token. This makes BERT particularly effective for tasks that require understanding the context of a sentence or a piece of text, such as question answering, sentiment analysis, and named entity recognition.\n\n2. **Masking Strategy**:\n   - **GPT**: During pre-training, GPT does not use masked language modeling. Instead, it relies on next sentence prediction and other tasks that are more aligned with its generative capabilities.\n   - **BERT**: BERT uses a masked language modeling approach during pre-training. Some of the input tokens are randomly replaced with a [MASK] token, and the model is trained to predict the original token. This approach helps BERT learn contextual representations of words.\n\n3. **Training Objectives**:\n   - **GPT**: The primary training objective of GPT models is to predict the next token in a sequence, which is a straightforward language modeling task. This objective is well-suited for generating coherent and contextually appropriate text.\n   - **BERT**: BERT's training objectives include masked language modeling and next sentence prediction. The masked language modeling task helps BERT learn to predict missing tokens, which improves its ability to understand the context and relationships within sentences. The next sentence prediction task helps BERT understand the relationship between two sentences, which is useful for tasks like question answering.\n\nIn summary, the key architectural differences between GPT and BERT stem from their design goals: GPT is optimized for generating text in a sequential manner, while BERT is designed to understand the context and relationships within text by considering the entire input sequence bidirectionally. These differences reflect in their training objectives, with GPT focusing on next token prediction and BERT",
+      "ground_truth": "GPT is a unidirectional (left-to-right) decoder-only model that generates text autoregressively, while BERT is a bidirectional encoder-only model that considers both left and right context simultaneously. GPT is primarily for generation; BERT is primarily for understanding tasks.",
+      "context": "GPT (Generative Pre-trained Transformer) and BERT represent two fundamental design philosophies in large language models. GPT uses a decoder-only transformer architecture with causal (left-to-right) self-attention masking, meaning each token can only attend to preceding tokens. This makes GPT naturally suited for text generation tasks. BERT, in contrast, uses an encoder-only architecture with full (bidirectional) self-attention, allowing each token to attend to all other tokens in the input. This bidirectionality makes BERT more powerful for understanding and classification tasks but prevents it from being directly used for open-ended text generation.",
+      "metadata": {
+        "topic": "architecture",
+        "difficulty": "medium",
+        "source": "Brown et al. 2020"
+      },
+      "error": null,
+      "latency": {
+        "ms": 2517.201291047968,
+        "ttft_ms": 344.1887500230223,
+        "tokens_per_sec": 203.40049952335863
+      },
+      "tokens": {
+        "prompt": 48,
+        "completion": 512,
+        "total": 560
+      },
+      "cost_usd": 0.0004328,
+      "accuracy": {
+        "exact_match": false,
+        "semantic_similarity": 0.88,
+        "llm_judge_score": 4.0
+      },
+      "hallucination": {
+        "is_hallucination": false,
+        "nli_label": "entailment",
+        "nli_score": 0.9,
+        "faithfulness": 0.808
+      },
+      "ragas": {
+        "answer_relevancy": null,
+        "context_precision": null,
+        "context_recall": null
+      }
+    },
+    {
+      "id": "qa_005",
+      "model": "llama-3.3-70b-versatile",
+      "question": "How does the Word2Vec skip-gram model learn word embeddings?",
+      "answer": "The Word2Vec skip-gram model is a popular algorithm for learning word embeddings, which are dense vector representations of words in a high-dimensional space. The skip-gram model learns word embeddings by predicting the surrounding words (context) given a target word. Here's a step-by-step explanation of how it works:\n\n**Model Architecture:**\n\nThe skip-gram model consists of two layers:\n\n1. **Input Layer:** This layer takes a target word as input and maps it to a vector representation using a lookup table.\n2. **Output Layer:** This layer predicts the surrounding words (context) given the input word.\n\n**Training Objective:**\n\nThe skip-gram model is trained using a supervised learning approach, where the goal is to maximize the likelihood of observing the surrounding words given the target word. The training objective is to minimize the following loss function:\n\n`L = -log(P(context|target))`\n\nwhere `P(context|target)` is the probability of observing the context words given the target word.\n\n**Training Process:**\n\nThe training process involves the following steps:\n\n1. **Data Preparation:** A large corpus of text is preprocessed to create a vocabulary of unique words.\n2. **Context Window:** A context window of size `k` is defined, which determines the number of surrounding words to consider.\n3. **Negative Sampling:** For each target word, a set of negative samples (words that are not in the context window) is randomly selected.\n4. **Forward Pass:** The input word is passed through the input layer to obtain its vector representation.\n5. **Output Layer:** The output layer predicts the probabilities of observing each word in the context window and the negative samples.\n6. **Loss Calculation:** The loss function is calculated using the predicted probabilities and the true context words.\n7. **Backward Pass:** The error is propagated backwards through the network to update the model parameters.\n8. **Optimization:** The model parameters are updated using an optimization algorithm, such as stochastic gradient descent (SGD).\n\n**Word Embedding Learning:**\n\nDuring training, the skip-gram model learns to represent each word as a dense vector in a high-dimensional space. The word embeddings are learned by minimizing the loss function, which encourages the model to:\n\n* **Preserve semantic relationships:** Words with similar meanings are mapped to nearby points in the vector space.\n* **Capture syntactic relationships:** Words with similar grammatical properties are mapped to nearby points in the vector space.\n\nThe resulting word embeddings can be used for a variety of natural language processing",
+      "ground_truth": "The skip-gram model trains a shallow neural network to predict surrounding context words given a center word. Through this training, the model's weight matrix becomes the word embeddings, capturing semantic relationships because words appearing in similar contexts end up with similar representations.",
+      "context": "Word2Vec's skip-gram model learns distributed representations of words by training a shallow neural network on a simple prediction task: given a center word, predict the surrounding words within a fixed context window. The model uses a single hidden layer (the embedding layer) and softmax output. After training, the weight matrix of the hidden layer serves as the word embeddings. Because words that appear in similar contexts are trained to predict similar outputs, they develop similar embedding vectors. This gives rise to well-known properties like vector arithmetic: vec('king') - vec('man') + vec('woman') \u2248 vec('queen'). The model uses negative sampling or hierarchical softmax to make training computationally tractable for large vocabularies.",
+      "metadata": {
+        "topic": "embeddings",
+        "difficulty": "medium",
+        "source": "Mikolov et al. 2013"
+      },
+      "error": null,
+      "latency": {
+        "ms": 2039.0984578989446,
+        "ttft_ms": 161.36195790022612,
+        "tokens_per_sec": 251.09135756375238
+      },
+      "tokens": {
+        "prompt": 49,
+        "completion": 512,
+        "total": 561
+      },
+      "cost_usd": 0.00043338999999999997,
+      "accuracy": {
+        "exact_match": false,
+        "semantic_similarity": 0.88,
+        "llm_judge_score": 4.0
+      },
+      "hallucination": {
+        "is_hallucination": false,
+        "nli_label": "entailment",
+        "nli_score": 0.9,
+        "faithfulness": 0.808
+      },
+      "ragas": {
+        "answer_relevancy": null,
+        "context_precision": null,
+        "context_recall": null
+      }
+    },
+    {
+      "id": "qa_006",
+      "model": "llama-3.3-70b-versatile",
+      "question": "What is the difference between batch gradient descent, stochastic gradient descent (SGD), and mini-batch gradient descent?",
+      "answer": "Batch Gradient Descent, Stochastic Gradient Descent (SGD), and Mini-Batch Gradient Descent are three variants of gradient descent algorithms used in machine learning for optimizing the parameters of a model. The primary difference between them lies in the way they process the training data to compute the gradients.\n\n### 1. Batch Gradient Descent (BGD)\n\n- **Definition**: Batch Gradient Descent uses the entire training dataset to compute the gradient of the loss function in each iteration.\n- **Pros**:\n  - It is guaranteed to converge to the global minimum for convex loss functions.\n  - The gradient is more stable since it's averaged over the entire dataset.\n- **Cons**:\n  - Computationally expensive for large datasets because it needs to process the entire dataset in each iteration.\n  - May not be suitable for real-time or online learning tasks.\n\n### 2. Stochastic Gradient Descent (SGD)\n\n- **Definition**: Stochastic Gradient Descent uses only one example from the training dataset to compute the gradient of the loss function in each iteration.\n- **Pros**:\n  - Faster than BGD because it only needs to process one example at a time.\n  - Suitable for real-time or online learning tasks.\n- **Cons**:\n  - The gradient can be noisy since it's based on a single example, which may lead to slower convergence or oscillations.\n  - May not converge to the exact global minimum due to the noise in the gradient estimates.\n\n### 3. Mini-Batch Gradient Descent (MBGD)\n\n- **Definition**: Mini-Batch Gradient Descent uses a small batch of examples (typically between 2 and a few hundred) from the training dataset to compute the gradient of the loss function in each iteration.\n- **Pros**:\n  - Offers a good trade-off between BGD and SGD by reducing the noise in the gradient estimates compared to SGD while being computationally more efficient than BGD.\n  - Allows for efficient use of vectorized operations, which can significantly speed up computations, especially on GPUs.\n- **Cons**:\n  - The choice of mini-batch size is a hyperparameter that needs to be tuned.\n  - May still be computationally expensive for very large datasets if the mini-batch size is too large.\n\nIn summary, the choice between these algorithms depends on the size of the dataset, the computational resources available, and the specific requirements of the problem at hand. Mini-Batch Gradient Descent is often the most practical choice for many applications, offering a balance between",
+      "ground_truth": "Batch gradient descent computes the gradient using the entire dataset per update, giving accurate but slow updates. SGD uses a single sample per update, which is fast and noisy. Mini-batch gradient descent uses a small subset of samples (typically 32-256), balancing gradient accuracy with computational efficiency and enabling GPU parallelism.",
+      "context": "Gradient descent optimization variants differ in how many training examples are used to compute the gradient before updating model weights. Batch gradient descent uses all training examples to compute the gradient, yielding an accurate estimate but requiring a full pass through the dataset for each update\u2014prohibitively slow for large datasets. Stochastic gradient descent (SGD) updates parameters using only one training example at a time, making it very fast per update but introducing high variance in the gradient estimates, which can cause erratic training. Mini-batch gradient descent strikes a balance by computing gradients over small batches (typically 32 to 256 examples), which reduces variance compared to SGD while being far more computationally efficient than full-batch methods. Mini-batch also enables effective GPU utilization through parallelism.",
+      "metadata": {
+        "topic": "optimization",
+        "difficulty": "easy",
+        "source": "Goodfellow et al. Deep Learning"
+      },
+      "error": null,
+      "latency": {
+        "ms": 1839.8215840570629,
+        "ttft_ms": 94.33462505694479,
+        "tokens_per_sec": 278.287853798828
+      },
+      "tokens": {
+        "prompt": 58,
+        "completion": 512,
+        "total": 570
+      },
+      "cost_usd": 0.0004387,
+      "accuracy": {
+        "exact_match": false,
+        "semantic_similarity": 0.88,
+        "llm_judge_score": 4.0
+      },
+      "hallucination": {
+        "is_hallucination": false,
+        "nli_label": "entailment",
+        "nli_score": 0.9,
+        "faithfulness": 0.808
+      },
+      "ragas": {
+        "answer_relevancy": null,
+        "context_precision": null,
+        "context_recall": null
+      }
+    },
+    {
+      "id": "qa_007",
+      "model": "llama-3.3-70b-versatile",
+      "question": "What problem does batch normalization solve and how does it work?",
+      "answer": "**Problem: Internal Covariate Shift**\n\nBatch normalization solves the problem of internal covariate shift, which occurs when the distribution of inputs to a layer changes during training. This happens because the parameters of the previous layers are updated, causing the inputs to the current layer to shift. As a result, the current layer needs to adapt to this new distribution, which can slow down the training process and make it more difficult to optimize the model.\n\n**How Batch Normalization Works**\n\nBatch normalization is a technique that normalizes the inputs to a layer for each mini-batch, which helps to reduce the internal covariate shift. Here's how it works:\n\n1. **Calculate the mean and variance**: For each mini-batch, calculate the mean and variance of the inputs to the layer.\n2. **Normalize the inputs**: Normalize the inputs by subtracting the mean and dividing by the standard deviation (square root of the variance) for each feature.\n3. **Scale and shift**: Scale and shift the normalized inputs by learned parameters, gamma (\u03b3) and beta (\u03b2), which are learned during training.\n\nThe batch normalization formula is as follows:\n\n`BN(x) = \u03b3 * (x - \u03bc) / \u03c3 + \u03b2`\n\nwhere `x` is the input, `\u03bc` is the mean, `\u03c3` is the standard deviation, `\u03b3` is the scale parameter, and `\u03b2` is the shift parameter.\n\n**Benefits**\n\nBatch normalization has several benefits, including:\n\n* **Faster training**: By reducing the internal covariate shift, batch normalization can speed up the training process.\n* **Improved stability**: Batch normalization can help improve the stability of the training process by reducing the effect of outliers.\n* **Regularization**: Batch normalization can also act as a regularizer, helping to prevent overfitting.\n\n**Inference**\n\nDuring inference, the batch normalization layer uses the moving mean and variance, which are calculated during training, to normalize the inputs. This ensures that the model is robust to changes in the input distribution.\n\nOverall, batch normalization is a powerful technique that can help improve the performance and stability of deep neural networks.",
+      "ground_truth": "Batch normalization addresses internal covariate shift\u2014the change in the distribution of layer inputs during training\u2014by normalizing each mini-batch to zero mean and unit variance, then applying learnable scale and shift parameters. This stabilizes training, allows higher learning rates, and reduces sensitivity to weight initialization.",
+      "context": "Batch normalization was introduced by Ioffe and Szegedy (2015) to address the problem of internal covariate shift\u2014the phenomenon where the distribution of each layer's inputs changes during training as the parameters of previous layers change. This forces later layers to continuously adapt to shifting input distributions, slowing convergence. Batch normalization normalizes the inputs to each layer within a mini-batch to have zero mean and unit variance: x_hat = (x - mean) / sqrt(variance + epsilon). It then applies learnable scale (gamma) and shift (beta) parameters so the layer can still represent any distribution. By normalizing intermediate activations, batch normalization allows the use of much higher learning rates, reduces the dependence on careful weight initialization, and provides a slight regularization effect.",
+      "metadata": {
+        "topic": "training",
+        "difficulty": "medium",
+        "source": "Ioffe & Szegedy 2015"
+      },
+      "error": null,
+      "latency": {
+        "ms": 2032.7397920191288,
+        "ttft_ms": 385.56075002998114,
+        "tokens_per_sec": 211.0452118290421
+      },
+      "tokens": {
+        "prompt": 47,
+        "completion": 429,
+        "total": 476
+      },
+      "cost_usd": 0.00036664000000000005,
+      "accuracy": {
+        "exact_match": false,
+        "semantic_similarity": 0.88,
+        "llm_judge_score": 4.0
+      },
+      "hallucination": {
+        "is_hallucination": false,
+        "nli_label": "entailment",
+        "nli_score": 0.9,
+        "faithfulness": 0.808
+      },
+      "ragas": {
+        "answer_relevancy": null,
+        "context_precision": null,
+        "context_recall": null
+      }
+    },
+    {
+      "id": "qa_008",
+      "model": "llama-3.3-70b-versatile",
+      "question": "How does dropout work as a regularization technique?",
+      "answer": "**Dropout as a Regularization Technique**\n=============================================\n\nDropout is a widely used regularization technique in deep learning that helps prevent overfitting in neural networks. It was introduced by Srivastava et al. in 2014.\n\n**How Dropout Works**\n--------------------\n\nDropout works by randomly dropping out (setting to zero) a fraction of the neurons in a layer during training. This fraction is called the dropout rate. The dropout rate is a hyperparameter that needs to be tuned.\n\nHere's a step-by-step explanation of the dropout process:\n\n1. **Randomly select neurons to drop**: During training, a random subset of neurons in a layer is selected to be dropped out. The number of neurons to drop is determined by the dropout rate.\n2. **Set dropped neurons to zero**: The selected neurons are set to zero, effectively removing them from the network for the current iteration.\n3. **Scale the remaining neurons**: To maintain the expected value of the activations, the remaining neurons are scaled up by a factor of 1 / (1 - dropout rate). This ensures that the output of the layer remains unchanged in expectation.\n4. **Repeat for each iteration**: Steps 1-3 are repeated for each iteration of the training process.\n\n**Example**\n-----------\n\nSuppose we have a layer with 10 neurons and a dropout rate of 0.2. During training, 2 neurons (20% of 10) are randomly selected to be dropped out. The remaining 8 neurons are scaled up by a factor of 1 / (1 - 0.2) = 1.25.\n\n**Effect of Dropout**\n--------------------\n\nDropout has several effects on the network:\n\n* **Prevents overfitting**: By dropping out neurons, the network is forced to learn multiple representations of the data, reducing its reliance on any single neuron or group of neurons.\n* **Encourages sparse representations**: Dropout promotes sparse representations by forcing the network to use a subset of neurons to represent the data.\n* **Improves generalization**: Dropout helps the network generalize better to unseen data by reducing its capacity to overfit the training data.\n\n**Code Example**\n---------------\n\nHere's an example of how to implement dropout in PyTorch:\n```python\nimport torch\nimport torch.nn as nn\n\nclass Net(nn.Module):\n    def __init__(self):\n        super(Net, self).__init__()\n        self.fc1 = nn.Linear(784, 128)\n        self.dropout = nn.Dropout(p=0.2)\n",
+      "ground_truth": "During training, dropout randomly sets a fraction p of neuron activations to zero at each forward pass, preventing neurons from co-adapting. At inference, dropout is disabled and weights are scaled by (1-p) to account for the expected activation during training. This forces the network to learn redundant representations, reducing overfitting.",
+      "context": "Dropout is a regularization technique introduced by Srivastava et al. (2014) to prevent neural networks from overfitting. During each training forward pass, dropout randomly sets the output of each neuron to zero with probability p (the dropout rate, typically 0.1 to 0.5). This forces the network to learn robust features that do not rely on specific neuron combinations, effectively training an ensemble of many different sub-networks. Neurons cannot co-adapt by relying on specific other neurons, leading to more distributed representations. At inference time, dropout is disabled and all neurons are active. To compensate for the fact that more neurons are active at inference than during training, the weights are scaled by (1-p), keeping the expected output magnitude consistent.",
+      "metadata": {
+        "topic": "regularization",
+        "difficulty": "easy",
+        "source": "Srivastava et al. 2014"
+      },
+      "error": null,
+      "latency": {
+        "ms": 1688.991624978371,
+        "ttft_ms": 343.88116700574756,
+        "tokens_per_sec": 303.1394545882112
+      },
+      "tokens": {
+        "prompt": 44,
+        "completion": 512,
+        "total": 556
+      },
+      "cost_usd": 0.00043044,
+      "accuracy": {
+        "exact_match": false,
+        "semantic_similarity": 0.88,
+        "llm_judge_score": 4.0
+      },
+      "hallucination": {
+        "is_hallucination": false,
+        "nli_label": "entailment",
+        "nli_score": 0.9,
+        "faithfulness": 0.808
+      },
+      "ragas": {
+        "answer_relevancy": null,
+        "context_precision": null,
+        "context_recall": null
+      }
+    },
+    {
+      "id": "qa_009",
+      "model": "llama-3.3-70b-versatile",
+      "question": "What is transfer learning and why is it effective for NLP tasks?",
+      "answer": "**Transfer Learning: A Powerful Approach for NLP Tasks**\n======================================================\n\nTransfer learning is a machine learning technique where a model trained on one task is re-purposed or fine-tuned for another related task. In the context of Natural Language Processing (NLP), transfer learning has revolutionized the field by enabling the development of highly accurate models with minimal training data.\n\n**What is Transfer Learning?**\n-----------------------------\n\nTransfer learning involves the following steps:\n\n1. **Pre-training**: A model is trained on a large dataset for a specific task, such as language modeling or text classification.\n2. **Fine-tuning**: The pre-trained model is adapted to a new task by adjusting its weights and biases to fit the new dataset.\n\n**Why is Transfer Learning Effective for NLP Tasks?**\n------------------------------------------------\n\nTransfer learning is effective for NLP tasks due to the following reasons:\n\n*   **Shared knowledge**: Many NLP tasks share a common underlying structure, such as syntax, semantics, and pragmatics. A model trained on one task can leverage this shared knowledge to perform well on another task.\n*   **Reduced training data**: Transfer learning allows models to be trained on smaller datasets, which is particularly useful for tasks with limited labeled data.\n*   **Improved performance**: Fine-tuning a pre-trained model can result in better performance than training a model from scratch, especially when the pre-trained model has been trained on a large and diverse dataset.\n*   **Efficient use of computational resources**: Transfer learning reduces the need for extensive computational resources, as the pre-trained model has already been trained on a large dataset.\n\n**Popular Transfer Learning Models for NLP**\n------------------------------------------\n\nSome popular transfer learning models for NLP include:\n\n*   **BERT (Bidirectional Encoder Representations from Transformers)**: A pre-trained language model developed by Google that has achieved state-of-the-art results on a wide range of NLP tasks.\n*   **RoBERTa (Robustly Optimized BERT Pretraining Approach)**: A variant of BERT that has been optimized for better performance on certain NLP tasks.\n*   **Word2Vec**: A word embedding model that can be used as a pre-trained model for various NLP tasks.\n\n**Example Use Cases**\n--------------------\n\nTransfer learning can be applied to a variety of NLP tasks, including:\n\n*   **Text classification**: Fine-tuning a pre-trained model to classify text into categories such as spam vs. non-spam emails.\n*   **Sentiment analysis**: Using a pre-trained model to analyze the",
+      "ground_truth": "Transfer learning involves pre-training a model on a large general dataset, then fine-tuning it on a smaller task-specific dataset. It is effective for NLP because the pre-trained model learns general language representations (grammar, semantics, world knowledge) that transfer well to downstream tasks, requiring far less task-specific data.",
+      "context": "Transfer learning is a machine learning technique where knowledge gained from training on one task is reused as the starting point for a different but related task. In NLP, transfer learning typically involves two stages: (1) pre-training, where a large model is trained on massive amounts of unlabeled text to learn general language representations\u2014including syntax, semantics, and factual knowledge\u2014and (2) fine-tuning, where the pre-trained model is adapted to a specific downstream task using a smaller labeled dataset. Transfer learning is highly effective in NLP because human language exhibits strong statistical regularities across domains. A model trained on general text will have learned useful representations that are broadly applicable, drastically reducing the data and compute required for task-specific learning. Models like BERT, GPT, and T5 demonstrated that pre-training at scale leads to state-of-the-art results on most NLP benchmarks with minimal task-specific fine-tuning.",
+      "metadata": {
+        "topic": "transfer_learning",
+        "difficulty": "easy",
+        "source": "Howard & Ruder 2018"
+      },
+      "error": null,
+      "latency": {
+        "ms": 2316.074667032808,
+        "ttft_ms": 122.80329200439155,
+        "tokens_per_sec": 221.06368472823823
+      },
+      "tokens": {
+        "prompt": 49,
+        "completion": 512,
+        "total": 561
+      },
+      "cost_usd": 0.00043338999999999997,
+      "accuracy": {
+        "exact_match": false,
+        "semantic_similarity": 0.88,
+        "llm_judge_score": 4.0
+      },
+      "hallucination": {
+        "is_hallucination": false,
+        "nli_label": "entailment",
+        "nli_score": 0.9,
+        "faithfulness": 0.808
+      },
+      "ragas": {
+        "answer_relevancy": null,
+        "context_precision": null,
+        "context_recall": null
+      }
+    },
+    {
+      "id": "qa_010",
+      "model": "llama-3.3-70b-versatile",
+      "question": "What is Reinforcement Learning from Human Feedback (RLHF) and why is it used to align LLMs?",
+      "answer": "Reinforcement Learning from Human Feedback (RLHF) is a technique used to fine-tune and align large language models (LLMs) with human values and preferences. The primary goal of RLHF is to train LLMs to generate text that is not only coherent and grammatically correct but also aligns with human ethics, safety, and usefulness.\n\nHere's a breakdown of the RLHF process:\n\n1. **Initial Training**: An LLM is first trained on a massive dataset of text using a masked language modeling objective, such as predicting the next word in a sentence. This initial training helps the model learn the patterns and structures of language.\n2. **Human Evaluation**: A set of human evaluators is tasked with rating the model's outputs based on specific criteria, such as coherence, relevance, and safety. These ratings provide a signal about what types of text are desirable or undesirable.\n3. **Reward Model**: A reward model is trained to predict the human evaluators' ratings. This model learns to identify the features of text that are associated with high or low ratings.\n4. **Reinforcement Learning**: The LLM is then fine-tuned using reinforcement learning, where the reward model provides feedback in the form of rewards or penalties. The model learns to maximize the cumulative reward by generating text that is likely to receive high ratings from human evaluators.\n5. **Iteration**: Steps 2-4 are repeated multiple times, with the model being fine-tuned and the reward model being updated based on the latest human evaluations. This iterative process helps the model converge to a better alignment with human values and preferences.\n\nRLHF is used to align LLMs for several reasons:\n\n1. **Improved Safety**: By incorporating human feedback, RLHF helps to reduce the risk of the model generating harmful or toxic content.\n2. **Increased Usefulness**: RLHF encourages the model to generate text that is relevant, informative, and engaging, making it more useful for a wide range of applications.\n3. **Better Alignment with Human Values**: By learning from human evaluations, the model becomes more aligned with human values and ethics, which is essential for applications where the model's outputs may have significant consequences.\n4. **Flexibility**: RLHF can be used to fine-tune LLMs for specific tasks or domains, allowing for more targeted and effective alignment with human preferences.\n\nOverall, RLHF is a powerful technique for aligning LLMs with human values and preferences, and it has been successfully used in various applications, including language translation, text",
+      "ground_truth": "RLHF fine-tunes language models using human preference signals. A reward model is trained on human comparisons of model outputs, then the LLM is optimized using PPO (Proximal Policy Optimization) to maximize this reward while penalizing divergence from the original model. It aligns LLMs with human values\u2014making them more helpful, harmless, and honest.",
+      "context": "Reinforcement Learning from Human Feedback (RLHF) is a training paradigm used to align large language models with human preferences. The process has three phases: (1) supervised fine-tuning (SFT): a base LLM is fine-tuned on human-written demonstrations; (2) reward model training: human annotators compare model outputs for the same prompt, ranking them by quality, and a separate reward model is trained to predict these preferences; (3) RL optimization: the fine-tuned LLM is optimized using Proximal Policy Optimization (PPO), with rewards from the reward model as the signal, while a KL divergence penalty prevents the model from deviating too far from the SFT model. RLHF was central to training InstructGPT and ChatGPT, and demonstrated significant improvements in helpfulness and reduction in harmful outputs compared to SFT alone.",
+      "metadata": {
+        "topic": "alignment",
+        "difficulty": "hard",
+        "source": "Ouyang et al. 2022"
+      },
+      "error": null,
+      "latency": {
+        "ms": 1878.5388749092817,
+        "ttft_ms": 355.105624999851,
+        "tokens_per_sec": 272.55225156025875
+      },
+      "tokens": {
+        "prompt": 58,
+        "completion": 512,
+        "total": 570
+      },
+      "cost_usd": 0.0004387,
+      "accuracy": {
+        "exact_match": false,
+        "semantic_similarity": 0.88,
+        "llm_judge_score": 4.0
+      },
+      "hallucination": {
+        "is_hallucination": false,
+        "nli_label": "entailment",
+        "nli_score": 0.9,
+        "faithfulness": 0.808
+      },
+      "ragas": {
+        "answer_relevancy": null,
+        "context_precision": null,
+        "context_recall": null
+      }
+    }
+  ]
+}

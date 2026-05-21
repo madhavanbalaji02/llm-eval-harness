@@ -4,8 +4,12 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import os
 import time
 from typing import Any, Optional
+
+# Semantic similarity and NLI use the HuggingFace Inference API (async httpx),
+# avoiding all local torch/MPS model loading — no executor needed.
 
 import numpy as np
 from pydantic import BaseModel, Field
@@ -188,24 +192,9 @@ class Evaluator:
         self.max_concurrency = max_concurrency
         self.system_prompt = system_prompt
 
-        self._sentence_model: Any = None
-        self._nli_checker: Any = None
-
-    def _get_sentence_model(self) -> Any:
-        if self._sentence_model is None and self.enable_semantic:
-            from sentence_transformers import SentenceTransformer
-
-            logger.info("Loading sentence-transformers model (all-MiniLM-L6-v2)...")
-            self._sentence_model = SentenceTransformer("all-MiniLM-L6-v2")
-        return self._sentence_model
-
-    def _get_nli_checker(self) -> Any:
-        if self._nli_checker is None and self.enable_nli:
-            from .metrics.hallucination import NLIHallucinationChecker
-
-            logger.info("Loading NLI model (cross-encoder/nli-deberta-v3-small)...")
-            self._nli_checker = NLIHallucinationChecker()
-        return self._nli_checker
+        # HF models are loaded lazily inside the worker process (_hf_worker.py).
+        # No model objects are stored on the Evaluator — only strings cross the
+        # process boundary, which is safe and avoids all MPS/OMP mutex issues.
 
     async def _evaluate_item(
         self,
@@ -229,9 +218,13 @@ class Evaluator:
                 )
 
     async def _run_single(self, item: DatasetItem) -> EvalResult:
-        from .metrics.accuracy import compute_exact_match, compute_semantic_similarity, compute_llm_judge
+        from .metrics.accuracy import (
+            compute_exact_match,
+            compute_llm_judge,
+            compute_semantic_similarity_api,
+        )
         from .metrics.cost import estimate_cost
-        from .metrics.hallucination import check_nli_hallucination
+        from .metrics.hallucination import check_nli_groq
 
         run: RunResult = await self.runner.run(
             prompt=item.question,
@@ -253,23 +246,23 @@ class Evaluator:
         # Exact match
         em = compute_exact_match(run.response, item.ground_truth)
 
-        # Semantic similarity
+        # Semantic similarity via HuggingFace Inference API (async, no local model).
         sem_sim = 0.0
         if self.enable_semantic:
-            model = self._get_sentence_model()
-            if model is not None:
-                sem_sim = compute_semantic_similarity(run.response, item.ground_truth, model)
+            sem_sim = await compute_semantic_similarity_api(
+                run.response,
+                item.ground_truth,
+                hf_token=os.getenv("HF_TOKEN"),
+            )
 
-        # NLI hallucination
+        # NLI hallucination via Groq LLM (async, no local cross-encoder).
         nli_label: Optional[str] = None
         nli_score: Optional[float] = None
         is_hallucination = False
         if self.enable_nli and item.context:
-            checker = self._get_nli_checker()
-            if checker is not None:
-                nli_label, nli_score, is_hallucination = check_nli_hallucination(
-                    checker, item.context, run.response
-                )
+            nli_label, nli_score, is_hallucination = await check_nli_groq(
+                item.context, run.response
+            )
 
         # LLM judge
         judge_score: Optional[float] = None
@@ -345,6 +338,7 @@ class Evaluator:
             return results
 
         try:
+            from .metrics.ragas_metrics import evaluate_ragas_batch
             ragas_scores = await asyncio.to_thread(
                 evaluate_ragas_batch,
                 [(r.question, r.answer, i.context, r.ground_truth) for r, i in successful],

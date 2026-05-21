@@ -221,6 +221,7 @@ from evaluator.metrics.hallucination import (
     NLIHallucinationChecker,
     _softmax,
     check_nli_hallucination,
+    check_nli_groq,
 )
 
 
@@ -235,42 +236,18 @@ class TestSoftmax:
         assert result[1] > result[2]
 
     def test_numerically_stable(self):
-        # Should not overflow with large inputs
         result = _softmax([1000.0, 1001.0, 999.0])
         assert all(0 <= v <= 1 for v in result)
         assert abs(sum(result) - 1.0) < 1e-6
 
 
 class TestNLIHallucinationChecker:
-    def _make_checker_with_mock_model(self, scores: list[float]) -> NLIHallucinationChecker:
-        checker = NLIHallucinationChecker.__new__(NLIHallucinationChecker)
-        checker.model_name = "mock"
-        mock_model = MagicMock()
-        import numpy as np
-        mock_model.predict = MagicMock(return_value=np.array([scores]))
-        checker._model = mock_model
-        return checker
+    """NLI is now Groq API-based; the local checker class is a compatibility stub."""
 
-    def test_entailment_not_hallucination(self):
-        # entailment: scores [contradiction=0, entailment=10, neutral=0]
-        checker = self._make_checker_with_mock_model([0.0, 10.0, 0.0])
-        is_hall, label, score = checker.is_hallucination("context", "answer")
-        assert label == "entailment"
-        assert not is_hall
-
-    def test_contradiction_is_hallucination(self):
-        # contradiction: scores [contradiction=10, entailment=0, neutral=0]
-        checker = self._make_checker_with_mock_model([10.0, 0.0, 0.0])
-        is_hall, label, score = checker.is_hallucination("context", "answer")
-        assert label == "contradiction"
-        assert is_hall
-        assert score > 0.9
-
-    def test_neutral_not_hallucination(self):
-        checker = self._make_checker_with_mock_model([0.0, 0.0, 10.0])
-        is_hall, label, score = checker.is_hallucination("context", "answer")
-        assert label == "neutral"
-        assert not is_hall
+    def test_checker_stub_raises(self):
+        checker = NLIHallucinationChecker()
+        with pytest.raises((NotImplementedError, RuntimeError)):
+            checker.is_hallucination("ctx", "ans")
 
     def test_check_nli_empty_context(self):
         checker = MagicMock()
@@ -292,6 +269,58 @@ class TestNLIHallucinationChecker:
         label, score, is_hall = check_nli_hallucination(checker, "context", "answer")
         assert label is None
         assert score is None
+        assert not is_hall
+
+    @pytest.mark.asyncio
+    async def test_check_nli_groq_entailment(self):
+        """check_nli_groq returns (label, score, is_hall) on Groq API success."""
+        from unittest.mock import AsyncMock, patch
+
+        mock_resp = MagicMock()
+        mock_resp.choices[0].message.content = "ENTAILMENT"
+
+        mock_client = MagicMock()
+        mock_client.chat.completions.create = AsyncMock(return_value=mock_resp)
+
+        with patch("groq.AsyncGroq", return_value=mock_client):
+            label, score, is_hall = await check_nli_groq("ctx", "ans")
+
+        assert label == "entailment"
+        assert not is_hall
+
+    @pytest.mark.asyncio
+    async def test_check_nli_groq_contradiction(self):
+        from unittest.mock import AsyncMock, patch
+
+        mock_resp = MagicMock()
+        mock_resp.choices[0].message.content = "CONTRADICTION"
+
+        mock_client = MagicMock()
+        mock_client.chat.completions.create = AsyncMock(return_value=mock_resp)
+
+        with patch("groq.AsyncGroq", return_value=mock_client):
+            label, score, is_hall = await check_nli_groq("ctx", "ans")
+
+        assert label == "contradiction"
+        assert is_hall
+
+    @pytest.mark.asyncio
+    async def test_check_nli_groq_empty_inputs(self):
+        label, score, is_hall = await check_nli_groq("", "ans")
+        assert label is None
+        assert not is_hall
+
+    @pytest.mark.asyncio
+    async def test_check_nli_groq_api_failure(self):
+        from unittest.mock import AsyncMock, patch
+
+        mock_client = MagicMock()
+        mock_client.chat.completions.create = AsyncMock(side_effect=RuntimeError("API down"))
+
+        with patch("groq.AsyncGroq", return_value=mock_client):
+            label, score, is_hall = await check_nli_groq("context", "answer")
+
+        assert label is None
         assert not is_hall
 
 

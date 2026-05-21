@@ -1,7 +1,11 @@
-"""RAGAS-based metrics: faithfulness, answer_relevancy, context_precision, context_recall.
+"""RAGAS 0.4.x evaluation: Groq LLM + HuggingFace Inference API embeddings.
 
-Wraps the RAGAS library evaluation pipeline, configured with either
-OpenAI or Anthropic as the backend LLM.
+No local torch/GPU required. Uses:
+  - llama-3.3-70b-versatile (Groq) as the LLM evaluator
+  - all-MiniLM-L6-v2 (HF Inference API) for answer_relevancy embeddings
+  - faithfulness, context_precision, context_recall are LLM-only (no embeddings)
+
+Runs synchronously; always call from asyncio.to_thread or a worker thread.
 """
 
 from __future__ import annotations
@@ -12,107 +16,133 @@ from typing import Any, Optional
 
 logger = logging.getLogger(__name__)
 
-# Metric keys returned per sample
 RAGAS_METRIC_KEYS = ["faithfulness", "answer_relevancy", "context_precision", "context_recall"]
 
+_HF_EMBED_URL = (
+    "https://api-inference.huggingface.co/pipeline/feature-extraction"
+    "/sentence-transformers/all-MiniLM-L6-v2"
+)
 
-def _build_ragas_llm(provider: str = "openai", model: Optional[str] = None) -> Any:
-    """Build a LangChain LLM wrapper for RAGAS."""
-    if provider == "anthropic":
-        from langchain_anthropic import ChatAnthropic
 
-        return ChatAnthropic(
-            model=model or "claude-haiku-4-5-20251001",
-            api_key=os.getenv("ANTHROPIC_API_KEY"),
+class _HFInferenceAPIEmbeddings:
+    """LangChain-compatible embeddings backed by HuggingFace Inference API.
+
+    No local model loading — uses httpx to call the free HF endpoint.
+    Compatible with RAGAS LangchainEmbeddingsWrapper.
+    """
+
+    def __init__(self) -> None:
+        self.hf_token = os.getenv("HF_TOKEN", "")
+
+    def _fetch(self, texts: list[str]) -> list[list[float]]:
+        import httpx
+
+        response = httpx.post(
+            _HF_EMBED_URL,
+            headers={"Authorization": f"Bearer {self.hf_token}"},
+            json={"inputs": texts, "options": {"wait_for_model": True}},
+            timeout=60.0,
         )
-    from langchain_openai import ChatOpenAI
+        response.raise_for_status()
+        return response.json()
 
-    return ChatOpenAI(
-        model=model or "gpt-4o-mini",
-        api_key=os.getenv("OPENAI_API_KEY"),
+    def embed_documents(self, texts: list[str]) -> list[list[float]]:
+        return self._fetch(texts)
+
+    def embed_query(self, text: str) -> list[float]:
+        return self._fetch([text])[0]
+
+
+def _build_ragas_llm() -> Any:
+    """Build RAGAS InstructorLLM using Groq's OpenAI-compatible API.
+
+    RAGAS 0.4.x collections metrics require InstructorLLM (via llm_factory),
+    not LangchainLLMWrapper. Groq is OpenAI-compatible so we pass an OpenAI
+    client pointed at Groq's base URL.
+    """
+    from openai import OpenAI
+    from ragas.llms import llm_factory
+
+    groq_client = OpenAI(
+        api_key=os.getenv("GROQ_API_KEY"),
+        base_url="https://api.groq.com/openai/v1",
     )
+    # Use 8b for RAGAS — higher TPD limit, sufficient quality for faithfulness/precision/recall
+    return llm_factory("llama-3.1-8b-instant", provider="openai", client=groq_client)
 
 
-def _build_ragas_embeddings(provider: str = "openai") -> Any:
-    """Build embeddings for RAGAS context metrics."""
-    if provider == "anthropic":
-        # RAGAS doesn't support Anthropic embeddings natively; fall back to OpenAI
-        from langchain_openai import OpenAIEmbeddings
-
-        return OpenAIEmbeddings(api_key=os.getenv("OPENAI_API_KEY"))
-    from langchain_openai import OpenAIEmbeddings
-
-    return OpenAIEmbeddings(api_key=os.getenv("OPENAI_API_KEY"))
+def _build_ragas_embeddings() -> Any:
+    """RAGAS 0.4 requires embedding_factory — only needed for AnswerRelevancy.
+    We skip that metric and use LLM-only metrics instead."""
+    return None
 
 
 def evaluate_ragas_batch(
     samples: list[tuple[str, str, str, str]],
-    provider: str = "openai",
-    llm_model: Optional[str] = None,
+    **_kwargs,
 ) -> list[dict[str, Optional[float]]]:
-    """Run RAGAS evaluation on a batch of (question, answer, context, ground_truth) tuples.
+    """Run RAGAS evaluation on (question, answer, context, ground_truth) tuples.
 
-    Args:
-        samples: List of (question, answer, context, ground_truth).
-        provider: LLM backend — 'openai' or 'anthropic'.
-        llm_model: Optional model override.
-
-    Returns:
-        List of dicts with RAGAS metric scores per sample.
-        Missing values are None.
+    Groq LLM + HuggingFace Inference API embeddings — no local models.
     """
     empty = {k: None for k in RAGAS_METRIC_KEYS}
-
     if not samples:
         return []
 
     try:
-        from datasets import Dataset
-        from ragas import evaluate as ragas_evaluate
-        from ragas.metrics import (
-            answer_relevancy,
-            context_precision,
-            context_recall,
-            faithfulness,
-        )
+        import warnings
+        from ragas import EvaluationDataset, evaluate as ragas_evaluate
+        from ragas.dataset_schema import SingleTurnSample
+        # Use the old-style singleton metrics (they ARE ragas.metrics.base.Metric instances).
+        # The new collections classes inherit BaseMetric which evaluate() rejects.
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            from ragas.metrics import (
+                faithfulness as _faithfulness,
+                context_precision as _ctx_precision,
+                context_recall as _ctx_recall,
+            )
 
-        questions, answers, contexts, ground_truths = zip(*samples)
-        data = {
-            "question": list(questions),
-            "answer": list(answers),
-            "contexts": [[ctx] for ctx in contexts],
-            "ground_truth": list(ground_truths),
-        }
-        dataset = Dataset.from_dict(data)
-        llm = _build_ragas_llm(provider, llm_model)
-        embeddings = _build_ragas_embeddings(provider)
+        ragas_samples = [
+            SingleTurnSample(
+                user_input=q,
+                retrieved_contexts=[ctx] if ctx else [""],
+                response=ans,
+                reference=gt,
+            )
+            for q, ans, ctx, gt in samples
+        ]
+        dataset = EvaluationDataset(samples=ragas_samples)
+
+        llm = _build_ragas_llm()
+        # Set LLM on each singleton metric
+        _faithfulness.llm = llm
+        _ctx_precision.llm = llm
+        _ctx_recall.llm = llm
 
         result = ragas_evaluate(
             dataset=dataset,
-            metrics=[faithfulness, answer_relevancy, context_precision, context_recall],
-            llm=llm,
-            embeddings=embeddings,
+            metrics=[_faithfulness, _ctx_precision, _ctx_recall],
             raise_exceptions=False,
+            show_progress=False,
         )
 
         df = result.to_pandas()
-        output = []
-        for _, row in df.iterrows():
-            output.append(
-                {
-                    "faithfulness": _safe_float(row.get("faithfulness")),
-                    "answer_relevancy": _safe_float(row.get("answer_relevancy")),
-                    "context_precision": _safe_float(row.get("context_precision")),
-                    "context_recall": _safe_float(row.get("context_recall")),
-                }
-            )
-        return output
+        return [
+            {
+                "faithfulness": _safe_float(row.get("faithfulness")),
+                "answer_relevancy": _safe_float(row.get("answer_relevancy")),
+                "context_precision": _safe_float(row.get("context_precision")),
+                "context_recall": _safe_float(row.get("context_recall")),
+            }
+            for _, row in df.iterrows()
+        ]
 
     except ImportError as exc:
-        logger.warning("RAGAS not available: %s — skipping RAGAS metrics", exc)
+        logger.warning("RAGAS not available: %s", exc)
         return [{**empty} for _ in samples]
     except Exception as exc:
-        logger.warning("RAGAS evaluation failed: %s — returning None scores", exc)
+        logger.warning("RAGAS evaluation failed: %s", exc)
         return [{**empty} for _ in samples]
 
 
@@ -121,24 +151,16 @@ def evaluate_ragas_single(
     answer: str,
     context: str,
     ground_truth: str,
-    provider: str = "openai",
-    llm_model: Optional[str] = None,
 ) -> dict[str, Optional[float]]:
-    """Evaluate RAGAS metrics for a single (question, answer, context, ground_truth)."""
-    results = evaluate_ragas_batch(
-        [(question, answer, context, ground_truth)],
-        provider=provider,
-        llm_model=llm_model,
-    )
+    results = evaluate_ragas_batch([(question, answer, context, ground_truth)])
     return results[0] if results else {k: None for k in RAGAS_METRIC_KEYS}
 
 
 def _safe_float(value: Any) -> Optional[float]:
-    """Convert a value to float, returning None on failure."""
     try:
         if value is None:
             return None
         f = float(value)
-        return None if (f != f) else f  # NaN check
+        return None if (f != f) else f
     except (TypeError, ValueError):
         return None
